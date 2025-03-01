@@ -7,7 +7,6 @@ FROM rocker/rstudio:4.4.2
 RUN Rscript -e "install.packages('renv', repos =c(CRAN = 'https://cloud.r-project.org'))"
 RUN Rscript -e "install.packages('remotes', repos =c(CRAN = 'https://cloud.r-project.org'))"
 RUN Rscript -e "remotes::install_version('caret', version = '7.0-1', repos = 'https://cloud.r-project.org')"
-RUN Rscript -e "remotes::install_version('randomforest', version = '4.7-1.2', repos = 'https://cloud.r-project.org')"
 RUN Rscript -e "remotes::install_version('tidyverse', version = '2.0.0', repos = 'https://cloud.r-project.org')"
 RUN Rscript -e "remotes::install_version('corrplot', version = '0.95', repos = 'https://cloud.r-project.org')"
 RUN Rscript -e "remotes::install_version('themis', version = '1.0.3', repos = 'https://cloud.r-project.org')"
