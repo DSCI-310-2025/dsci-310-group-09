@@ -1,0 +1,150 @@
+```{r}
+# library(tidyverse)
+library(randomForest)  
+library(caret)  
+library(corrplot) # For correlation heatmap
+library(themis) # For SMOTE
+library(recipes) # FOR SMOTE
+```
+
+```{r}
+# this would pull the dataset from original url, extract the zip file and store everything in data directory
+# url <- "https://archive.ics.uci.edu/static/public/19/car+evaluation.zip"
+# download.file(url, destfile = "car_evaluation.zip")
+# unzip("car_evaluation.zip", exdir = "data")
+```
+
+```{r}
+data <- read.table("data/car.data", header = FALSE, sep = ",")
+data|>nrow()
+data <- data |> rename(buying = V1,
+               maint = V2,
+               doors = V3,
+               persons = V4, 
+               lug_boot = V5,
+               safety = V6,
+               class = V7)
+data$buying <- as.factor(data$buying) 
+data$maint <- as.factor(data$maint) 
+data$doors <- as.factor(data$doors) 
+data$persons <- as.factor(data$persons) 
+data$lug_boot <- as.factor(data$lug_boot) 
+data$safety <- as.factor(data$safety) 
+data$class <- as.factor(data$class) 
+```
+```{r}
+summary(data)
+# Check for missing values
+colSums(is.na(data))
+```
+```{r}
+# Frequency distribution of the target variable
+table(data$class)
+
+# Visualizing the distribution of class
+ggplot(data, aes(x = class, fill = class)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(title = "Distribution of Car Evaluations", x = "Class", y = "Count")
+```
+```{r}
+# Visualizing relationships
+features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
+plot_list <- lapply(features, function(feature) {
+  ggplot(data, aes(x = .data[[feature]], fill = class)) +
+    geom_bar(position = "dodge") +
+    theme_minimal() +
+    labs(title = paste(feature, "vs. Evaluation Class"))
+})
+
+# Display plots separately
+for (plot in plot_list) {
+  print(plot)
+}
+```
+```{r}
+# Mosaic Plot for Pairwise Relationship (optional)
+mosaic(~ safety + class, data = data, shade = TRUE, legend = TRUE)
+```
+```{r}
+# Ordinal Encoding of Categorical Variables
+ordinal_mapping <- list(
+  buying = c("low" = 1, "med" = 2, "high" = 3, "vhigh" = 4),
+  maint = c("low" = 1, "med" = 2, "high" = 3, "vhigh" = 4),
+  doors = c("2" = 2, "3" = 3, "4" = 4, "5more" = 5),
+  persons = c("2" = 2, "4" = 4, "more" = 5),
+  lug_boot = c("small" = 1, "med" = 2, "big" = 3),
+  safety = c("low" = 1, "med" = 2, "high" = 3),
+  class = c("unacc" = 1, "acc" = 2, "good" = 3, "vgood" = 4)
+)
+
+df_encoded <- data %>% mutate(across(names(ordinal_mapping), ~ ordinal_mapping[[cur_column()]][.]))
+```
+```{r}
+head(df_encoded)
+```
+```{r}
+#There is a great imbalance across different classes, introducing SMOTE to generate synthetic samples in order to improve the distribution
+df_encoded$class <- as.factor(df_encoded$class)  # Ensure class is a factor
+
+# Create a recipe for SMOTE
+smote_recipe <- recipe(class ~ ., data = df_encoded) %>%
+  step_smote(class, over_ratio = 1) %>%
+  prep() %>%
+  bake(new_data = NULL)
+
+df_balanced <- smote_recipe
+
+# Visualizing the distribution of class after SMOTE 
+ggplot(df_balanced, aes(x = class, fill = class)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(title = "Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
+```
+```{r}
+# Visualizing relationships
+features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
+plot_list <- lapply(features, function(feature) {
+  ggplot(data, aes(x = .data[[feature]], fill = class)) +
+    geom_bar(position = "dodge") +
+    theme_minimal() +
+    labs(title = paste(feature, "vs. Evaluation Class"))
+})
+
+# Display plots separately
+for (plot in plot_list) {
+  print(plot)
+}
+```
+```{r}
+# Correlation Heatmap
+corr_matrix <- cor(df_balanced %>% mutate(across(where(is.factor), as.numeric)))
+corrplot(corr_matrix, method = "color", type = "lower", tl.cex = 0.8)
+```
+```{r}
+#Applying Random Forest after encoding and balancing the dataset
+n <- nrow(df_balanced )
+trainidx <- sample.int(n, floor(n * .75))
+testidx <- setdiff(1:n, trainidx)
+train <- df_balanced[trainidx, ]
+test <- df_balanced[testidx, ]
+rf <- randomForest(class ~ ., data = train)
+bag <- randomForest(class ~ ., data = train, mtry = ncol(data) - 1)
+preds <-  tibble(truth = test$class, rf = predict(rf, test), bag = predict(bag, test))
+```
+```{r}
+predictions <- predict(rf, test)
+
+conf_matrix <- confusionMatrix(predictions, test$class)
+conf_matrix
+```
+
+```{r}
+
+```
+```{r}
+
+```
+```{r}
+
+```
