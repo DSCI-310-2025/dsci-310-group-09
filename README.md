@@ -26,6 +26,18 @@ git clone https://github.com/DSCI-310-2025/dsci-310-group-09.git
 ``` 
 to clone down our project repository.
 
+2. make sure you have Docker application activated, and in your terminal, pull the docker image by entering:
+```
+docker pull justintrenchcoat/milestone_1:latest
+```
+3. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
+```
+docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work justintrenchcoat/milestone_1
+ ```
+
+4. Open a browser, enter "localhost:8787" in the searchbar, in the prompt, enter "rstudio" as Username and "password" as Password. Now you may access all the files in the repository, and able to run it with the container!
+
+
 ## Dependencies
 - R and R packages:
     - tidyverse
