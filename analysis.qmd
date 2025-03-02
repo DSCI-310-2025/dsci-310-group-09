@@ -167,6 +167,14 @@ conf_matrix
 
 ## Discussion
 
+Our random forest model achieves accurarcy abot 99% and a strong Kappa statistic about 0.99, which shows it effectively predicts car acceptablility base on the six measurements.
+
+The results we got were very much in line with our expectations as our model performed very well. Our model correctly classifies almost all cars into the correct acceptable categories.
+
+The results we get are very important for decision-making in the automotive industry. Consumers can choose to purchase vehicles based on demand, manufacturers can prioritize the demand for vehicle production, and dealers can develop strategies that are more in line with the market.
+
+Our model is very good, but we still have some interesting questions for the future. Will additional features, such as brand, have an impact on the prediction? Is there any other model that is faster with no loss of accuracy? How is it possible to make our model more realistic? In conclusion, in the future, we may refine the data, compare more models, or try to apply our models to real-world problems.
+
 ## References
 
 Bohanec, M. (1988). Car Evaluation \[Dataset\]. UCI Machine Learning Repository. <https://doi.org/10.24432/C5JP48>.
