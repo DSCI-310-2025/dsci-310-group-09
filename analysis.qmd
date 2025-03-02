@@ -18,6 +18,12 @@ According to Chiu et al. (2022), price dispersion positively impacts car accepta
 
 This project aims to develop a classification model to predict car acceptability based on various features such as price, maintenance cost, safety, and seating capacity. This analysis uses the [Car Evaluation dataset](https://archive.ics.uci.edu/dataset/19/car+evaluation), which contains 1,728 instances and six features: buying price, maintenance cost, number of doors, seating capacity, luggage size, and safety rating. With an increasing number of car models available in the market, understanding how different attributes affect car classification can help streamline the evaluation process. The goal is to predict car acceptability categories: unacceptable (unacc), acceptable (acc), good (good), and very good (vgood). Being able to predict car acceptability can enhance automated recommendations, improve quality control, and support consumer purchasing decisions.
 
+## Method & Results
+
+### Install and Loading Libraries
+
+Installs and loads necessary libraries for data processing, visualization, and machine learning. The key libraries include `randomForest` for classification, `caret` for model evaluation, `themis` for handling imbalanced data using SMOTE, and `corrplot`for visualizing correlations.
+
 ```{r}
 # library(tidyverse)
 library(randomForest)  
@@ -33,6 +39,10 @@ library(recipes) # FOR SMOTE
 # download.file(url, destfile = "car_evaluation.zip")
 # unzip("car_evaluation.zip", exdir = "data")
 ```
+
+### Importing Data & Data Exploration
+
+Reads the dataset, assigns appropriate and meaningful column names, checks the number of rows, and convert all categorical variables into factors. The dataset consists of 1,728 rows with 6 categorical features related to car evaluation.
 
 ```{r}
 data <- read.table("data/car.data", header = FALSE, sep = ",")
@@ -53,11 +63,19 @@ data$safety <- as.factor(data$safety)
 data$class <- as.factor(data$class) 
 ```
 
+### Summary and Missing Data Check
+
+Provides a summary of each feature, including frequency distributions and potential missing values. It also checks for class imbalance in the target variable `class`.
+
 ```{r}
 summary(data)
 # Check for missing values
 colSums(is.na(data))
 ```
+
+### Class Distribution Visuluzation
+
+Generates a bar chart showing how the car evaluations are distributed across different categories. This helps identify class imbalances.
 
 ```{r}
 # Frequency distribution of the target variable
@@ -69,6 +87,12 @@ ggplot(data, aes(x = class, fill = class)) +
   theme_minimal() +
   labs(title = "Distribution of Car Evaluations", x = "Class", y = "Count")
 ```
+
+The dataset shows significant class imbalance, with the unacc (unacceptable) class dominating at 71% of the original data (1,210 out of 1,728 instances). This imbalance may skew model predictions, leading to poor performance on the minority classes (good, vgood).
+
+### Feature Relationships Visualization
+
+Creates bar charts for each feature to analyze its relationship with the target variable `class`. This helps identify important factors influencing car evaluations.
 
 ```{r}
 # Visualizing relationships
@@ -85,6 +109,10 @@ for (plot in plot_list) {
   print(plot)
 }
 ```
+
+### Feature Engineering and Data Resampling
+
+Encodes categorical variables into numeric values based on an ordinal scale to make them suitable for Random Forest classification model.
 
 ```{r}
 # Ordinal Encoding of Categorical Variables
@@ -104,6 +132,12 @@ df_encoded <- data %>% mutate(across(names(ordinal_mapping), ~ ordinal_mapping[[
 ```{r}
 head(df_encoded)
 ```
+
+### Handling Class Imbalance Using SMOTE
+
+Applies SMOTE (Synthetic Minority Over-sampling Technique) to generate synthetic samples and balance the dataset, reducing bias in classification.
+
+Visualizes the new class distribution after SMOTE to ensure the dataset is balanced for better model performance.
 
 ```{r}
 #There is a great imbalance across different classes, introducing SMOTE to generate synthetic samples in order to improve the distribution
@@ -140,11 +174,27 @@ for (plot in plot_list) {
 }
 ```
 
+### Correlation Heatmap
+
+Generates a correlation heatmap to examine relationships between features. Helps identify redundant or highly correlated features.
+
 ```{r}
 # Correlation Heatmap
 corr_matrix <- cor(df_balanced %>% mutate(across(where(is.factor), as.numeric)))
 corrplot(corr_matrix, method = "color", type = "lower", tl.cex = 0.8)
 ```
+
+### Classification Model
+
+1.  Splits the balanced dataset into 75% training and 25% testing sets for model training and evaluation.
+
+2.  Trains two models:
+
+-   `Random Forest (rf)`: Uses multiple decision trees with feature selection.
+
+-   `Bagging (bag)`: Uses all features to grow trees, reducing variance.
+
+3.  Predicts class labels for the test set and computes a confusion matrix to evaluate accuracy, sensitivity, and specificity of the model.
 
 ```{r}
 #Applying Random Forest after encoding and balancing the dataset
