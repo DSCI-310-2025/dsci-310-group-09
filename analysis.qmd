@@ -1,7 +1,27 @@
+# Car Acceptability Category Prediction Analysis
+
+## Summary
+
+We aim to develop a Random Forest classification model to predict car acceptability categories: unacceptable (unacc), acceptable (acc), good (good), and very good (vgood). This prediction is based on categorical attributes such as price, maintenance cost, safety, and seating capacity. The data is sourced from the Car Evaluation dataset found in the UCI Machine Learning Repository (Bohanec, 1998).
+
+Our initial data exploration revealed a significant class imbalance, with "unacceptable" cars dominating the dataset. To improve classification performance, we applied ordinal encoding to categorical features and utilized SMOTE (Synthetic Minority Over-sampling Technique) to balance the dataset.
+
+Our Random Forest model achieved an impressive overall accuracy of 99% and a strong Kappa statistic of 0.99, indicating robust predictive performance and a strong agreement between the predicted and actual classes. Overall, the model provides a highly accurate and interpretable approach to classifying car acceptability, though further refinements could enhance fairness across all categories.
+
+In summary, this analysis demonstrates how machine learning can be effectively applied to real-world decision-making in the automotive sector.
+
+## Introduction
+
+Evaluating car acceptability is a critical factor in decision-making within the automotive industry. It affects consumer choices regarding vehicle purchases, manufacturers' priorities, and dealership strategies. Car purchases represent one of the most significant financial decisions for households, with affordability being the primary barrier for many buyers. Price plays a crucial role in accessibility, particularly for budget-conscious consumers, such as first-time buyers or individuals in emerging markets.
+
+According to Chiu et al. (2022), price dispersion positively impacts car acceptability. Because car purchases are high-cost, long-term investments, misaligned choices due to information asymmetry—such as undervaluing safety features—can lead to serious financial or safety repercussions (Canada, 2024). For instance, vehicles with poor safety ratings have been linked to higher accident rates. Consequently, Vrkljan et al. (2011) concluded that safety is considered the most important feature when purchasing a vehicle. Automating car evaluations helps buyers efficiently identify optimal vehicles, aligning with the trend toward data-driven consumer tools. Recognizing critical features, such as safety and price, reflects the industry's priorities in vehicle design.
+
+This project aims to develop a classification model to predict car acceptability based on various features such as price, maintenance cost, safety, and seating capacity. This analysis uses the [Car Evaluation dataset](https://archive.ics.uci.edu/dataset/19/car+evaluation), which contains 1,728 instances and six features: buying price, maintenance cost, number of doors, seating capacity, luggage size, and safety rating. With an increasing number of car models available in the market, understanding how different attributes affect car classification can help streamline the evaluation process. The goal is to predict car acceptability categories: unacceptable (unacc), acceptable (acc), good (good), and very good (vgood). Being able to predict car acceptability can enhance automated recommendations, improve quality control, and support consumer purchasing decisions.
+
 ```{r}
 # library(tidyverse)
 library(randomForest)  
-library(caret)  
+library(caret) 
 library(corrplot) # For correlation heatmap
 library(themis) # For SMOTE
 library(recipes) # FOR SMOTE
@@ -32,11 +52,13 @@ data$lug_boot <- as.factor(data$lug_boot)
 data$safety <- as.factor(data$safety) 
 data$class <- as.factor(data$class) 
 ```
+
 ```{r}
 summary(data)
 # Check for missing values
 colSums(is.na(data))
 ```
+
 ```{r}
 # Frequency distribution of the target variable
 table(data$class)
@@ -47,6 +69,7 @@ ggplot(data, aes(x = class, fill = class)) +
   theme_minimal() +
   labs(title = "Distribution of Car Evaluations", x = "Class", y = "Count")
 ```
+
 ```{r}
 # Visualizing relationships
 features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
@@ -62,10 +85,7 @@ for (plot in plot_list) {
   print(plot)
 }
 ```
-```{r}
-# Mosaic Plot for Pairwise Relationship (optional)
-mosaic(~ safety + class, data = data, shade = TRUE, legend = TRUE)
-```
+
 ```{r}
 # Ordinal Encoding of Categorical Variables
 ordinal_mapping <- list(
@@ -80,9 +100,11 @@ ordinal_mapping <- list(
 
 df_encoded <- data %>% mutate(across(names(ordinal_mapping), ~ ordinal_mapping[[cur_column()]][.]))
 ```
+
 ```{r}
 head(df_encoded)
 ```
+
 ```{r}
 #There is a great imbalance across different classes, introducing SMOTE to generate synthetic samples in order to improve the distribution
 df_encoded$class <- as.factor(df_encoded$class)  # Ensure class is a factor
@@ -101,6 +123,7 @@ ggplot(df_balanced, aes(x = class, fill = class)) +
   theme_minimal() +
   labs(title = "Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
 ```
+
 ```{r}
 # Visualizing relationships
 features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
@@ -116,11 +139,13 @@ for (plot in plot_list) {
   print(plot)
 }
 ```
+
 ```{r}
 # Correlation Heatmap
 corr_matrix <- cor(df_balanced %>% mutate(across(where(is.factor), as.numeric)))
 corrplot(corr_matrix, method = "color", type = "lower", tl.cex = 0.8)
 ```
+
 ```{r}
 #Applying Random Forest after encoding and balancing the dataset
 n <- nrow(df_balanced )
@@ -132,6 +157,7 @@ rf <- randomForest(class ~ ., data = train)
 bag <- randomForest(class ~ ., data = train, mtry = ncol(data) - 1)
 preds <-  tibble(truth = test$class, rf = predict(rf, test), bag = predict(bag, test))
 ```
+
 ```{r}
 predictions <- predict(rf, test)
 
@@ -139,12 +165,14 @@ conf_matrix <- confusionMatrix(predictions, test$class)
 conf_matrix
 ```
 
-```{r}
+## Discussion
 
-```
-```{r}
+## References
 
-```
-```{r}
+Bohanec, M. (1988). Car Evaluation \[Dataset\]. UCI Machine Learning Repository. <https://doi.org/10.24432/C5JP48>.
 
-```
+Canada, F. C. A. of. (2024, January 5). Government of Canada. Canada.ca. <https://www.canada.ca/en/financial-consumer-agency/services/loans/financing-car/risks.html>
+
+Chiu, L., Du, J., & Wang, N. (2022). The Effects of Price Dispersion on Sales in the Automobile Industry: A Dynamic Panel Analysis. SAGE Open. <https://doi.org/10.1177/21582440221120647>
+
+Vrkljan, B. H., & Anaby, D. (2011). What vehicle features are considered important when buying an automobile? An examination of driver preferences by age and gender. Journal of Safety Research, 42(1), 61-65. <https://doi.org/10.1016/j.jsr.2010.11.006>
