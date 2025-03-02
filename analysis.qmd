@@ -85,7 +85,7 @@ table(data$class)
 ggplot(data, aes(x = class, fill = class)) +
   geom_bar() +
   theme_minimal() +
-  labs(title = "Table1: Distribution of Car Evaluations", x = "Class", y = "Count")
+  labs(title = "Figure 1: Distribution of Car Evaluations", x = "Class", y = "Count")
 ```
 
 The dataset shows significant class imbalance, with the `unacc` (unacceptable) class dominating at 71% of the original data (1,210 out of 1,728 instances). This imbalance may skew model predictions, leading to poor performance on the minority classes (`good`, `vgood`).
@@ -101,7 +101,7 @@ plot_list <- lapply(features, function(feature) {
   ggplot(data, aes(x = .data[[feature]], fill = class)) +
     geom_bar(position = "dodge") +
     theme_minimal() +
-    labs(title = paste("Table 2 - 7:", feature, "vs. Evaluation Class"))
+    labs(title = paste("Figure 2 - 7:", feature, "vs. Evaluation Class"))
 })
 
 # Display plots separately
@@ -163,7 +163,7 @@ df_balanced <- smote_recipe
 ggplot(df_balanced, aes(x = class, fill = class)) +
   geom_bar() +
   theme_minimal() +
-  labs(title = "Table 8: Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
+  labs(title = "Figure 8: Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
 ```
 
 In contrast to the original imbalanced dataset, where `unacc` dominated with 1,210 instances, all classes (`unacc`, `acc`, `good`, `vgood`) now have approximately equal counts of around 1,250 each. This reflects the effectiveness of synthetic oversampling (SMOTE) in addressing the severe class imbalance.
@@ -175,7 +175,7 @@ plot_list <- lapply(features, function(feature) {
   ggplot(data, aes(x = .data[[feature]], fill = class)) +
     geom_bar(position = "dodge") +
     theme_minimal() +
-    labs(title = paste("Table 9 - 14:",feature, "vs. Evaluation Class"))
+    labs(title = paste("Figure 9 - 14:",feature, "vs. Evaluation Class"))
 })
 
 # Display plots separately
@@ -194,7 +194,7 @@ Generates a correlation heatmap to examine relationships between features. Helps
 # Correlation Heatmap
 corr_matrix <- cor(df_balanced %>% mutate(across(where(is.factor), as.numeric)))
 corrplot(corr_matrix, method = "color", type = "lower", tl.cex = 0.8)
-title("Table 15: Correlation Heatmap")
+title("Figure 15: Correlation Heatmap")
 ```
 
 This visualization illustrates the correlation and feature importance of various factors that influence car evaluation outcomes. The values range from -1, indicating a strong negative association, to +1, which indicates a strong positive association.
@@ -235,6 +235,25 @@ conf_matrix
 ```
 
 The model achieved an overall accuracy of approximately 99%, correctly classifying cars in most cases. The Kappa score of approximately 0.99 indicates a strong agreement between predictions and actual labels, while the high sensitivity and specificity values demonstrate excellent detection ability across all classes.
+
+### Result Visualization
+
+We visualize the confusion matrix to get a better idea of the accuracy of the model.
+
+```{R}
+# Convert confusion matrix to data frame
+conf_df <- data.frame(conf_matrix$table)
+
+# Plot Confusion Matrix as Heatmap
+ggplot(conf_df, aes(x = Prediction, y = Reference, fill = Freq)) +
+  geom_tile() +
+  geom_text(aes(label = Freq), color = "black", size = 5) +
+  scale_fill_gradient(low = "white", high = "lightblue") +
+  labs(title = "Figure 16: Confusion Matrix Heatmap", x = "Predicted Class", y = "Actual Class") +
+  theme_minimal()
+```
+
+The diagonal elements represent correct classifications, which means the model accurately predicted those classes of car. The off-diagonal elements represent incorrect classifications, which shows errors in the model made. Most of the predictions fall on the diagonal line, suggesting that the model performs very well in predicting the dataset. There are few cases of misclassification, which means that the accuracy rate is high.
 
 ## Discussion
 
