@@ -65,7 +65,7 @@ data$class <- as.factor(data$class)
 
 ### Summary and Missing Data Check
 
-Provides a summary of each feature, including frequency distributions and potential missing values. It also checks for class imbalance in the target variable `class`.
+Provides a summary of each feature, including frequency distributions and potential missing values. It also checks for class imbalance in the target variable `class`. There is no missing value in attributes.
 
 ```{r}
 summary(data)
@@ -73,7 +73,7 @@ summary(data)
 colSums(is.na(data))
 ```
 
-### Class Distribution Visuluzation
+### Class Distribution Visualization
 
 Generates a bar chart showing how the car evaluations are distributed across different categories. This helps identify class imbalances.
 
@@ -88,7 +88,7 @@ ggplot(data, aes(x = class, fill = class)) +
   labs(title = "Distribution of Car Evaluations", x = "Class", y = "Count")
 ```
 
-The dataset shows significant class imbalance, with the unacc (unacceptable) class dominating at 71% of the original data (1,210 out of 1,728 instances). This imbalance may skew model predictions, leading to poor performance on the minority classes (good, vgood).
+The dataset shows significant class imbalance, with the `unacc` (unacceptable) class dominating at 71% of the original data (1,210 out of 1,728 instances). This imbalance may skew model predictions, leading to poor performance on the minority classes (`good`, `vgood`).
 
 ### Feature Relationships Visualization
 
@@ -109,6 +109,14 @@ for (plot in plot_list) {
   print(plot)
 }
 ```
+
+The analysis of various features—such as safety, buying price, passenger capacity, maintenance cost, luggage boot size, and number of doors—shows that the dominant classification is `unacc` (unacceptable), which indicates a pattern of negative evaluations.
+
+There is a strong correlation between high safety ratings and the classifications `vgood` (very good) and "good." In contrast, vehicles that have low to medium safety ratings, along with high buying and maintenance costs, are often classified as `unacc`.
+
+Affordable cars, particularly those with low to medium prices, and vehicles with larger luggage boot sizes tend to have higher proportions of `acc` (acceptable) or `vgood` ratings. Conversely, cars with larger passenger capacities or smaller boots are frequently labeled as `unacc`.
+
+The number of doors appears to have a minimal impact on the evaluations, as `unacc` remains the most common classification regardless of this feature.
 
 ### Feature Engineering and Data Resampling
 
@@ -158,6 +166,8 @@ ggplot(df_balanced, aes(x = class, fill = class)) +
   labs(title = "Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
 ```
 
+In contrast to the original imbalanced dataset, where `unacc` dominated with 1,210 instances, all classes (`unacc`, `acc`, `good`, `vgood`) now have approximately equal counts of around 1,250 each. This reflects the effectiveness of synthetic oversampling (SMOTE) in addressing the severe class imbalance.
+
 ```{r}
 # Visualizing relationships
 features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
@@ -174,6 +184,8 @@ for (plot in plot_list) {
 }
 ```
 
+The "safety vs. Evaluation Class" plot shows that cars with high safety ratings mostly receive `vgood`/`good` evaluations, while `low`/`med` safety cars are often labeled `unacc`. In "buying vs. Evaluation Class," higher prices (`high`, `vhigh`) correlate with `unacc`, while affordable cars (`low`, `med`) are more likely to be `acc`/`vgood`. The "persons vs. Evaluation Class" indicates that cars with more passenger capacity tend to be `unacc`due to impracticality. For "maint vs. Evaluation Class," high maintenance costs link to `unacc`, while lower costs improve acceptability. Lastly, door count has a minimal impact, with `unacc` prevailing across categories, though cars with 5+ doors show slightly higher `acc`/`vgood`. Overall, `unacc` is associated with high-cost, low-safety, or impractical configurations, while `vgood`/`good` relate to affordability, safety, and utility.
+
 ### Correlation Heatmap
 
 Generates a correlation heatmap to examine relationships between features. Helps identify redundant or highly correlated features.
@@ -183,6 +195,12 @@ Generates a correlation heatmap to examine relationships between features. Helps
 corr_matrix <- cor(df_balanced %>% mutate(across(where(is.factor), as.numeric)))
 corrplot(corr_matrix, method = "color", type = "lower", tl.cex = 0.8)
 ```
+
+This visualization illustrates the correlation and feature importance of various factors that influence car evaluation outcomes. The values range from -1, indicating a strong negative association, to +1, which indicates a strong positive association.
+
+The strongest predictors are safety ratings and buying prices. Higher safety ratings are strongly associated with more favorable evaluations (such as "very good" or "good"), while cars with high or very high buying prices tend to receive negative outcomes (such as "unacceptable").
+
+Maintenance costs and the number of doors have a moderate influence, with lower maintenance costs enhancing acceptability. In contrast, features like luggage boot size and passenger capacity show minimal impact on car evaluations.
 
 ### Classification Model
 
@@ -214,6 +232,8 @@ predictions <- predict(rf, test)
 conf_matrix <- confusionMatrix(predictions, test$class)
 conf_matrix
 ```
+
+The model achieved an overall accuracy of approximately 99%, correctly classifying cars in most cases. The Kappa score of approximately 0.99 indicates a strong agreement between predictions and actual labels, while the high sensitivity and specificity values demonstrate excellent detection ability across all classes.
 
 ## Discussion
 
