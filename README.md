@@ -35,12 +35,22 @@ docker  build -t <container_name> .
 ```
 where the `<container_name>` could be any name you want. 
 
+For Mac users, use:
+```
+docker  build --platform=linux/amd64 -t <container_name> .
+```
+
 -------------------
 3. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
 ```
 docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work <container_name>
- ```
+```
 The `<container_name>` has to be the same name you made in step 2. 
+
+For Mac users, use:
+```
+docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work <container_name>
+```
 
 ---------------------
 4. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
@@ -66,7 +76,12 @@ docker pull justintrenchcoat/milestone_1:latest
 3. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
 ```
 docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work justintrenchcoat/milestone_1
- ```
+```
+
+For Mac users, use:
+```
+docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work justintrenchcoat/milestone_1
+```
 ---------------------
 4. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
 ---------------------------  
