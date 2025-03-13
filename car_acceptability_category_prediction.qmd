@@ -45,6 +45,7 @@ library(caret)
 library(corrplot) # For correlation heatmap
 library(themis) # For SMOTE
 library(recipes) # FOR SMOTE
+library(knitr)
 ```
 
 ```{r}
@@ -93,7 +94,11 @@ Generates a bar chart showing how the car evaluations are distributed across dif
 
 ```{r}
 # Frequency distribution of the target variable
-table(data$class)
+#| label: tbl-frequency_dsitri-car
+#| tbl-cap: Frequency distribution of the Car Acceptability Category.
+freq_table <- table(data$class)
+freq_table
+#knitr::kable(freq_table)
 
 # Visualizing the distribution of class
 ggplot(data, aes(x = class, fill = class)) +
@@ -102,7 +107,7 @@ ggplot(data, aes(x = class, fill = class)) +
   labs(title = "Figure 1: Distribution of Car Evaluations", x = "Class", y = "Count")
 ```
 
-The dataset shows significant class imbalance, with the `unacc` (unacceptable) class dominating at 71% of the original data (1,210 out of 1,728 instances). This imbalance may skew model predictions, leading to poor performance on the minority classes (`good`, `vgood`).
+The dataset shows significant class imbalance as shown in @tbl-frequency_dsitri-car, with the `unacc` (unacceptable) class dominating at 71% of the original data (1,210 out of 1,728 instances). This imbalance may skew model predictions, leading to poor performance on the minority classes (`good`, `vgood`).
 
 ### Feature Relationships Visualization
 
