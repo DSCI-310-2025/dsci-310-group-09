@@ -1,6 +1,7 @@
 services:
   analysis-env:
     image: justintrenchcoat/milestone_1
+    platform: linux/amd64
     ports:
       - "8787:8787"
     volumes:
