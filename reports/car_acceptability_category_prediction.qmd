@@ -7,7 +7,7 @@ format:
     number-tables: true
     embed-resources: true
 editor: source
-bibliography: references.bib
+bibliography: ../references.bib
 toc: true
 execute:
    echo: false
@@ -60,7 +60,7 @@ library(knitr)
 Reads the dataset, assigns appropriate and meaningful column names, checks the number of rows, and convert all categorical variables into factors. The dataset consists of 1,728 rows with 6 categorical features related to car evaluation.
 
 ```{r}
-data <- read.table("data/car.data", header = FALSE, sep = ",")
+data <- read.table("../data/car.data", header = FALSE, sep = ",")
 data|>nrow()
 data <- data |> rename(buying = V1,
                maint = V2,
