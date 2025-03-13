@@ -1,8 +1,22 @@
-# Car Acceptability Category Prediction Analysis
+---
+title: "Car Acceptability Category Prediction Analysis"
+author: "Jiaming Change, Yicheng Huang, Effie Wang, Brianna Zhou"
+format: 
+  html:
+    number-figures: true
+    number-tables: true
+    embed-resources: true
+editor: source
+bibliography: references.bib
+toc: true
+execute:
+   echo: false
+   warning: false
+---
 
 ## Summary
 
-We aim to develop a Random Forest classification model to predict car acceptability categories: unacceptable (unacc), acceptable (acc), good (good), and very good (vgood). This prediction is based on categorical attributes such as price, maintenance cost, safety, and seating capacity. The data is sourced from the Car Evaluation dataset found in the UCI Machine Learning Repository (Bohanec, 1998).
+We aim to develop a Random Forest classification model to predict car acceptability categories: unacceptable (unacc), acceptable (acc), good (good), and very good (vgood). This prediction is based on categorical attributes such as price, maintenance cost, safety, and seating capacity. The data is sourced from the Car Evaluation dataset found in the UCI Machine Learning Repository [@Bohanec1988].
 
 Our initial data exploration revealed a significant class imbalance, with "unacceptable" cars dominating the dataset. To improve classification performance, we applied ordinal encoding to categorical features and utilized SMOTE (Synthetic Minority Over-sampling Technique) to balance the dataset.
 
@@ -14,7 +28,7 @@ In summary, this analysis demonstrates how machine learning can be effectively a
 
 Evaluating car acceptability is a critical factor in decision-making within the automotive industry. It affects consumer choices regarding vehicle purchases, manufacturers' priorities, and dealership strategies. Car purchases represent one of the most significant financial decisions for households, with affordability being the primary barrier for many buyers. Price plays a crucial role in accessibility, particularly for budget-conscious consumers, such as first-time buyers or individuals in emerging markets.
 
-According to Chiu et al. (2022), price dispersion positively impacts car acceptability. Because car purchases are high-cost, long-term investments, misaligned choices due to information asymmetry—such as undervaluing safety features—can lead to serious financial or safety repercussions (Canada, 2024). For instance, vehicles with poor safety ratings have been linked to higher accident rates. Consequently, Vrkljan et al. (2011) concluded that safety is considered the most important feature when purchasing a vehicle. Automating car evaluations helps buyers efficiently identify optimal vehicles, aligning with the trend toward data-driven consumer tools. Recognizing critical features, such as safety and price, reflects the industry's priorities in vehicle design.
+According to @Chiu2022, price dispersion positively impacts car acceptability. Because car purchases are high-cost, long-term investments, misaligned choices due to information asymmetry—such as undervaluing safety features—can lead to serious financial or safety repercussions [@Canada2024]. For instance, vehicles with poor safety ratings have been linked to higher accident rates. Consequently, @Vrkljan2011 concluded that safety is considered the most important feature when purchasing a vehicle. Automating car evaluations helps buyers efficiently identify optimal vehicles, aligning with the trend toward data-driven consumer tools. Recognizing critical features, such as safety and price, reflects the industry's priorities in vehicle design.
 
 This project aims to develop a classification model to predict car acceptability based on various features such as price, maintenance cost, safety, and seating capacity. This analysis uses the [Car Evaluation dataset](https://archive.ics.uci.edu/dataset/19/car+evaluation), which contains 1,728 instances and six features: buying price, maintenance cost, number of doors, seating capacity, luggage size, and safety rating. With an increasing number of car models available in the market, understanding how different attributes affect car classification can help streamline the evaluation process. The goal is to predict car acceptability categories: unacceptable (unacc), acceptable (acc), good (good), and very good (vgood). Being able to predict car acceptability can enhance automated recommendations, improve quality control, and support consumer purchasing decisions.
 
