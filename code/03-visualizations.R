@@ -2,6 +2,12 @@ library(docopt)
 library(utils)
 library(readr)
 
+"This script reads processed data and create visualizations
+Usage: 03-visualizations.R --file_path=<file_path> --output_path=<output_path>
+" -> doc
+# file_path should be work/data/car.data
+# and output_path should be work/data/cleaned.RDS
+
 
 # Frequency distribution of the target variable
 table(data$class)
@@ -28,13 +34,7 @@ for (plot in plot_list) {
   print(plot)
 }
 
-# Create a recipe for SMOTE
-smote_recipe <- recipe(class ~ ., data = df_encoded) %>%
-  step_smote(class, over_ratio = 1) %>%
-  prep() %>%
-  bake(new_data = NULL)
 
-df_balanced <- smote_recipe
 
 # Visualizing the distribution of class after SMOTE 
 ggplot(df_balanced, aes(x = class, fill = class)) +

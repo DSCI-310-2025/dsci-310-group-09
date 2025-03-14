@@ -1,12 +1,21 @@
 library(docopt)
 library(utils)
 library(readr)
-"This script reads car data from the internet, clean it, and pre-processes it.
+library(dplyr)
+library(themis) # For SMOTE
+library(recipes) # FOR SMOTE
 
-Usage: 02-clean-preprocess.R --file_path=<file_path> --output_path=<output_path>
+"This script reads car data from the 'data' folder, cleans it, and processes it.
+
+Usage: 02-clean-preprocess.R --file_path=<file_path> --data_path=<data_path> --encode_path=<encode_path>
 " -> doc
-# file_path should be work/data/car.data
-# and output_path should be work/data/cleaned.RDS
+# file_path should be data/car.data
+# and data_path should be data/clean/cleaned.RDS
+# encode_path should be output/encoded.RDS
+
+# Usage: 02-clean-preprocess.R --file_path=data/car.data 
+# --data_path=data/cleaned.RDS
+# --encode_path=output/encoded.RDS
 
 opt <- docopt(doc)
 
@@ -27,6 +36,8 @@ data$lug_boot <- as.factor(data$lug_boot)
 data$safety <- as.factor(data$safety) 
 data$class <- as.factor(data$class) 
 
+write_rds(data, opt$data_path)
+
 # Ordinal Encoding of Categorical Variables
 ordinal_mapping <- list(
   buying = c("low" = 1, "med" = 2, "high" = 3, "vhigh" = 4),
@@ -42,3 +53,12 @@ df_encoded <- data %>% mutate(across(names(ordinal_mapping), ~ ordinal_mapping[[
 
 #There is a great imbalance across different classes, introducing SMOTE to generate synthetic samples in order to improve the distribution
 df_encoded$class <- as.factor(df_encoded$class)  # Ensure class is a factor
+
+# Create a recipe for SMOTE
+smote_recipe <- recipe(class ~ ., data = df_encoded) %>%
+  step_smote(class, over_ratio = 1) %>%
+  prep() %>%
+  bake(new_data = NULL)
+
+df_balanced <- smote_recipe
+write_rds(df_balanced, opt$encode_path)
