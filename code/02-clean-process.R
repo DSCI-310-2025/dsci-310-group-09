@@ -7,15 +7,14 @@ library(recipes) # FOR SMOTE
 
 "This script reads car data from the 'data' folder, cleans it, and processes it.
 
-Usage: 02-clean-preprocess.R --file_path=<file_path> --data_path=<data_path> --encode_path=<encode_path>
+Usage: 02-clean-process.R --file_path=<file_path> --data_path=<data_path> --encode_path=<encode_path>
 " -> doc
-# file_path should be data/car.data
+# file_path should be data/original/car.data
 # and data_path should be data/clean/cleaned.RDS
 # encode_path should be output/encoded.RDS
 
-# Usage: 02-clean-preprocess.R --file_path=data/car.data 
-# --data_path=data/cleaned.RDS
-# --encode_path=output/encoded.RDS
+# enter this in terminal or Makefile:
+# code/02-clean-process.R --file_path=data/original/car.data --data_path=data/cleaned/cleaned.RDS --encode_path=output/encoded.RDS
 
 opt <- docopt(doc)
 

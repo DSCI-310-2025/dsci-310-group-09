@@ -3,8 +3,9 @@ library(docopt)
 
 Usage: 01-load.R --url_path=<url_path> --output_path=<output_path>
 " -> doc
-# url_path should be https://archive.ics.uci.edu/static/public/19/car+evaluation.zip,
-# and output_path should be work/data/original
+
+# enter this in terminal or Makefile:
+# code/01-load.R --url_path=https://archive.ics.uci.edu/static/public/19/car+evaluation.zip --output_path=data/original/
 
 opt <- docopt(doc)
 
