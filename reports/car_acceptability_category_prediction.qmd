@@ -39,13 +39,13 @@ This project aims to develop a classification model to predict car acceptability
 Installs and loads necessary libraries for data processing, visualization, and machine learning. The key libraries include `randomForest` for classification, `caret` for model evaluation, `themis` for handling imbalanced data using SMOTE, and `corrplot`for visualizing correlations.
 
 ```{r}
-# library(tidyverse)
+#library(tidyverse)
 library(randomForest)  
 library(caret) 
 library(corrplot) # For correlation heatmap
 library(themis) # For SMOTE
 library(recipes) # FOR SMOTE
-library(knitr)
+#library(knitr)
 ```
 
 ```{r}
@@ -94,11 +94,15 @@ Generates a bar chart showing how the car evaluations are distributed across dif
 
 ```{r}
 # Frequency distribution of the target variable
-#| label: tbl-frequency_dsitri-car
-#| tbl-cap: Frequency distribution of the Car Acceptability Category.
-freq_table <- table(data$class)
-knitr::kable(freq_table)
 
+#| label: tbl-frequency_distri_car  
+#| tbl-cap: Frequency distribution of the Car Acceptability Category.
+
+table(data$class)
+
+```
+
+```{r}
 # Visualizing the distribution of class
 ggplot(data, aes(x = class, fill = class)) +
   geom_bar() +
@@ -106,7 +110,9 @@ ggplot(data, aes(x = class, fill = class)) +
   labs(title = "Figure 1: Distribution of Car Evaluations", x = "Class", y = "Count")
 ```
 
-The dataset shows significant class imbalance as shown in @tbl-frequency_dsitri-car, with the `unacc` (unacceptable) class dominating at 71% of the original data (1,210 out of 1,728 instances). This imbalance may skew model predictions, leading to poor performance on the minority classes (`good`, `vgood`).
+![Distribution of Car Evaluations](){#fig-car_distribution_plot}
+
+The dataset shows significant class imbalance as shown in @tbl-frequency_distri_car and @fig-car_distribution_plot, with the `unacc` (unacceptable) class dominating at 71% of the original data (1,210 out of 1,728 instances). This imbalance may skew model predictions, leading to poor performance on the minority classes (`good`, `vgood`).
 
 ### Feature Relationships Visualization
 
@@ -128,9 +134,22 @@ for (plot in plot_list) {
 }
 ```
 
-The analysis of various features—such as safety, buying price, passenger capacity, maintenance cost, luggage boot size, and number of doors—shows that the dominant classification is `unacc` (unacceptable), which indicates a pattern of negative evaluations.
+![Safety vs. Evaluation Class](){#fig-car_safety_plot}
 
-There is a strong correlation between high safety ratings and the classifications `vgood` (very good) and "good." In contrast, vehicles that have low to medium safety ratings, along with high buying and maintenance costs, are often classified as `unacc`.
+![Buying vs. Evaluation Class](){#fig-car_buying_plot}
+
+![Number of Passenger vs. Evaluation Class](){#fig-car_persons_plot}
+
+![Maintenance vs. Evaluation Class](){#fig-car_maintenance_plot}
+
+![Luggage Boot Size vs. Evaluation Class](){#fig-car_luggage_plot}
+
+![Number of Doors vs. Evaluation Class](){#fig-car_doors_plot}
+
+
+The analysis of various features—such as safety @fig-car_safety_plot, buying price @fig-car_buying_plot, passenger capacity @fig-car_persons_plot, maintenance cost @fig-car_maintenance_plot, luggage boot size @fig-car_luggage_plot, and number of doors—shows @fig-car_doors_plot that the dominant classification is `unacc` (unacceptable), which indicates a pattern of negative evaluations.
+
+There is a strong correlation between high safety ratings and the classifications `vgood` (very good) and "good". In contrast, vehicles that have low to medium safety ratings, along with high buying and maintenance costs, are often classified as `unacc`.
 
 Affordable cars, particularly those with low to medium prices, and vehicles with larger luggage boot sizes tend to have higher proportions of `acc` (acceptable) or `vgood` ratings. Conversely, cars with larger passenger capacities or smaller boots are frequently labeled as `unacc`.
 
@@ -184,7 +203,9 @@ ggplot(df_balanced, aes(x = class, fill = class)) +
   labs(title = "Figure 8: Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
 ```
 
-In contrast to the original imbalanced dataset, where `unacc` dominated with 1,210 instances, all classes (`unacc`, `acc`, `good`, `vgood`) now have approximately equal counts of around 1,250 each. This reflects the effectiveness of synthetic oversampling (SMOTE) in addressing the severe class imbalance.
+![Distribution of Car Evaluations After Feature Engineering](){#fig-car_distri_after_enginerring_plot}
+
+In contrast to the original imbalanced dataset, where `unacc` dominated with 1,210 instances, all classes (`unacc`, `acc`, `good`, `vgood`) now have approximately equal counts of around 1,250 each as shown in @fig-car_distri_after_enginerring_plot. This reflects the effectiveness of synthetic oversampling (SMOTE) in addressing the severe class imbalance.
 
 ```{r}
 # Visualizing relationships
@@ -202,7 +223,19 @@ for (plot in plot_list) {
 }
 ```
 
-The "safety vs. Evaluation Class" plot shows that cars with high safety ratings mostly receive `vgood`/`good` evaluations, while `low`/`med` safety cars are often labeled `unacc`. In "buying vs. Evaluation Class," higher prices (`high`, `vhigh`) correlate with `unacc`, while affordable cars (`low`, `med`) are more likely to be `acc`/`vgood`. The "persons vs. Evaluation Class" indicates that cars with more passenger capacity tend to be `unacc`due to impracticality. For "maint vs. Evaluation Class," high maintenance costs link to `unacc`, while lower costs improve acceptability. Lastly, door count has a minimal impact, with `unacc` prevailing across categories, though cars with 5+ doors show slightly higher `acc`/`vgood`. Overall, `unacc` is associated with high-cost, low-safety, or impractical configurations, while `vgood`/`good` relate to affordability, safety, and utility.
+![Safety vs. Evaluation Class with Class Balance](){#fig-car_safety_balance_plot}
+
+![Buying vs. Evaluation Class with Class Balance](){#fig-car_buying_balance_plot}
+
+![Number of Passenger vs. Evaluation Class with Class Balance](){#fig-car_persons_balance_plot}
+
+![Maintenance vs. Evaluation Class with Class Balance](){#fig-car_maintenance_balance_plot}
+
+![Luggage Boot Size vs. Evaluation Class with Class Balance](){#fig-car_luggage_balance_plot}
+
+![Number of Doors vs. Evaluation Class with Class Balance](){#fig-car_doors_balance_plot}
+
+The "safety vs. Evaluation Class" plot @fig-car_safety_balance_plot shows that cars with high safety ratings mostly receive `vgood`/`good` evaluations, while `low`/`med` safety cars are often labeled `unacc`. In "buying vs. Evaluation Class" @fig-car_buying_balance_plot, higher prices (`high`, `vhigh`) correlate with `unacc`, while affordable cars (`low`, `med`) are more likely to be `acc`/`vgood`. The "Number of Passenger vs. Evaluation Class" @fig-car_persons_balance_plot. indicates that cars with more passenger capacity tend to be `unacc`due to impracticality. For "maint vs. Evaluation Class" @fig-car_maintenance_balance_plot, high maintenance costs link to `unacc`, while lower costs improve acceptability. Lastly, door count has a minimal impact as shown in @fig-car_doors_balance_plot, with `unacc` prevailing across categories, though cars with 5+ doors show slightly higher `acc`/`vgood`. Overall, `unacc` is associated with high-cost, low-safety, or impractical configurations, while `vgood`/`good` relate to affordability, safety, and utility.
 
 ### Correlation Heatmap
 
@@ -215,7 +248,9 @@ corrplot(corr_matrix, method = "color", type = "lower", tl.cex = 0.8)
 title("Figure 15: Correlation Heatmap")
 ```
 
-This visualization illustrates the correlation and feature importance of various factors that influence car evaluation outcomes. The values range from -1, indicating a strong negative association, to +1, which indicates a strong positive association.
+![Correlation Heatmap](){#fig-corr_heatmap}
+
+This visualization @fig-corr_heatmap illustrates the correlation and feature importance of various factors that influence car evaluation outcomes. The values range from -1, indicating a strong negative association, to +1, which indicates a strong positive association.
 
 The strongest predictors are safety ratings and buying prices. Higher safety ratings are strongly associated with more favorable evaluations (such as "very good" or "good"), while cars with high or very high buying prices tend to receive negative outcomes (such as "unacceptable").
 
@@ -250,9 +285,14 @@ predictions <- predict(rf, test)
 
 conf_matrix <- confusionMatrix(predictions, test$class)
 conf_matrix
+
+accuracy <- round(conf_matrix$overall[1],3)
+kappa <- round(conf_matrix$overall[2],3)
+accuracy_pecentage <- round(conf_matrix$overall[1]*100)
+
 ```
 
-The model achieved an overall accuracy of approximately 99%, correctly classifying cars in most cases. The Kappa score of approximately 0.99 indicates a strong agreement between predictions and actual labels, while the high sensitivity and specificity values demonstrate excellent detection ability across all classes.
+The model achieved an overall accuracy approximately of `{r} accuracy`, correctly classifying cars in most cases. The approximate Kappa score `{r} kappa` indicates a strong agreement between predictions and actual labels, while the high sensitivity and specificity values demonstrate excellent detection ability across all classes.
 
 ### Result Visualization
 
@@ -271,11 +311,13 @@ ggplot(conf_df, aes(x = Prediction, y = Reference, fill = Freq)) +
   theme_minimal()
 ```
 
-The diagonal elements represent correct classifications, which means the model accurately predicted those classes of car. The off-diagonal elements represent incorrect classifications, which shows errors in the model made. Most of the predictions fall on the diagonal line, suggesting that the model performs very well in predicting the dataset. There are few cases of misclassification, which means that the accuracy rate is high.
+![Confusion Matrix Heatmap](){#fig-confusion_maxtrix__heatmap}
+
+In @fig-confusion_maxtrix__heatmap, the diagonal elements represent correct classifications, which means the model accurately predicted those classes of car. The off-diagonal elements represent incorrect classifications, which shows errors in the model made. Most of the predictions fall on the diagonal line, suggesting that the model performs very well in predicting the dataset. There are few cases of misclassification, which means that the accuracy rate is high.
 
 ## Discussion
 
-Our random forest model achieves accuracy about 99% and a strong Kappa statistic about 0.99, which shows it effectively predicts car acceptability base on the six measurements.
+Our random forest model achieves approximate accuracy of `{r} accuracy_pecentage` and a strong Kappa statistic about `{r} kappa`, which shows it effectively predicts car acceptability base on the six measurements.
 
 The results we got were very much in line with our expectations as our model performed very well. Our model correctly classifies almost all cars into the correct acceptable categories.
 
@@ -284,11 +326,3 @@ The results we get are very important for decision-making in the automotive indu
 Our model is very good, but we still have some interesting questions for the future. Will additional features, such as brand, have an impact on the prediction? Is there any other model that is faster with no loss of accuracy? How is it possible to make our model more realistic? In conclusion, in the future, we may refine the data, compare more models, or try to apply our models to real-world problems.
 
 ## References
-
-Bohanec, M. (1988). Car Evaluation \[Dataset\]. UCI Machine Learning Repository. <https://doi.org/10.24432/C5JP48>.
-
-Canada, F. C. A. of. (2024, January 5). Government of Canada. Canada.ca. <https://www.canada.ca/en/financial-consumer-agency/services/loans/financing-car/risks.html>
-
-Chiu, L., Du, J., & Wang, N. (2022). The Effects of Price Dispersion on Sales in the Automobile Industry: A Dynamic Panel Analysis. SAGE Open. <https://doi.org/10.1177/21582440221120647>
-
-Vrkljan, B. H., & Anaby, D. (2011). What vehicle features are considered important when buying an automobile? An examination of driver preferences by age and gender. Journal of Safety Research, 42(1), 61-65. <https://doi.org/10.1016/j.jsr.2010.11.006>
