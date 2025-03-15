@@ -1,27 +1,36 @@
 .PHONY: all clean report
 
-all: data/original/car.data \
-		output/encoded.RDS \
-		output/matrix.RDS \
-		output/tbl_target_dist.RDS \
-		output/fig_target_dist.png \
-		output/fig_target_safety_1.png \
-		output/fig_target_buying_1.png \
-		output/fig_target_persons_1.png \
-		output/fig_target_maint_1.png \
-		output/fig_target_lug_boot_1.png \
-		output/fig_target_doors_1.png \
-		output/fig_target_safety_2.png \
-		output/fig_target_buying_2.png \
-		output/fig_target_persons_2.png \
-		output/fig_target_maint_2.png \
-		output/fig_target_lug_boot_2.png \
-		output/fig_target_doors_2.png \
-		output/fig_smote_dist.png \
-		output/fig_corr_heatmap.png \
-		output/fig_conf_matrix.png \
-		reports/car_acceptability_category_prediction.html \
-		reports/car_acceptability_category_prediction.pdf
+all: 
+	make clean
+	make index.html
+
+report:
+	make index.html
+
+index.html:	data/original/car.data \
+			output/encoded.RDS \
+			output/matrix.RDS \
+			output/tbl_target_dist.RDS \
+			output/fig_target_dist.png \
+			output/fig_target_safety_1.png \
+			output/fig_target_buying_1.png \
+			output/fig_target_persons_1.png \
+			output/fig_target_maint_1.png \
+			output/fig_target_lug_boot_1.png \
+			output/fig_target_doors_1.png \
+			output/fig_target_safety_2.png \
+			output/fig_target_buying_2.png \
+			output/fig_target_persons_2.png \
+			output/fig_target_maint_2.png \
+			output/fig_target_lug_boot_2.png \
+			output/fig_target_doors_2.png \
+			output/fig_smote_dist.png \
+			output/fig_corr_heatmap.png \
+			output/fig_conf_matrix.png \
+			reports/car_acceptability_category_prediction.html \
+			reports/car_acceptability_category_prediction.pdf 
+			quarto render reports/car_acceptability_category_prediction.qmd
+			mv reports/car_acceptability_category_prediction.html docs/index.html
 
 # 01-load.R
 data/original/car.data: code/01-load.R 
@@ -57,6 +66,9 @@ reports/car_acceptability_category_prediction.pdf: output reports/car_acceptabil
 
 # clean
 clean: 
+		rm -rf data/cleaned/*
+		rm -rf data/original/*
 		rm -rf output/*
+		rm -rf docs/*
 		rm -rf reports/car_acceptability_category_prediction.html \
 				reports/car_acceptability_category_prediction.pdf
