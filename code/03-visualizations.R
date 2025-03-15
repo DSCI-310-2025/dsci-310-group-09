@@ -1,10 +1,10 @@
 library(docopt)
 library(utils)
 library(readr)
-library(corrplot) # For correlation heatmap
 library(knitr)
 library(dplyr)
 library(ggplot2)
+library(ggcorrplot)
 
 
 "This script reads processed data and create visualizations
@@ -39,8 +39,9 @@ plot_list <- lapply(features, function(feature) {
     geom_bar(position = "dodge") +
     theme_minimal() +
     labs(title = paste("Figure 2 - 7:", feature, "vs. Evaluation Class"))
+  ggsave(paste0(opt$output_path, "fig_relation_",feature,"_1.png"))
 })
-ggsave(paste0(opt$output_path, "fig_target_relation_1.png"))
+
 # Visualizing relationships again??
 features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
 plot_list <- lapply(features, function(feature) {
@@ -48,8 +49,8 @@ plot_list <- lapply(features, function(feature) {
     geom_bar(position = "dodge") +
     theme_minimal() +
     labs(title = paste("Figure 9 - 14:",feature, "vs. Evaluation Class"))
+  ggsave(paste0(opt$output_path, "fig_relation_",feature,"_2.png"))
 })
-ggsave(paste0(opt$output_path, "fig_target_relation_2.png"))
 
 
 #visualizations with encoded.RDS
@@ -63,9 +64,9 @@ ggsave(paste0(opt$output_path, "fig_smote_dist.png"))
 
 # Correlation Heatmap
 corr_matrix <- cor(df_balanced |> mutate(across(where(is.factor), as.numeric)))
-corrplot(corr_matrix, method = "color", type = "lower", tl.cex = 0.8)
-title("Figure 15: Correlation Heatmap")
-ggsave(paste0(opt$output_path, "fig_corr_heatmap.png"))
+p <- ggcorrplot(corr_matrix, type = "lower", lab=TRUE)
+p <- p+ggtitle("Figure 15: Correlation Heatmap")
+ggsave(paste0(opt$output_path, "fig_corr_heatmap.png"), plot=p)
 
 
 # visualization with model
