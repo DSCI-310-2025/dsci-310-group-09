@@ -60,22 +60,22 @@ library(knitr)
 Reads the dataset, assigns appropriate and meaningful column names, checks the number of rows, and convert all categorical variables into factors. The dataset consists of 1,728 rows with 6 categorical features related to car evaluation.
 
 ```{r}
-data <- read.table("data/car.data", header = FALSE, sep = ",")
+data <- read.table("/home/rstudio/work/data/original/car.data", header = FALSE, sep = ",")
 data|>nrow()
 data <- data |> rename(buying = V1,
                maint = V2,
                doors = V3,
-               persons = V4, 
+               persons = V4,
                lug_boot = V5,
                safety = V6,
                class = V7)
-data$buying <- as.factor(data$buying) 
-data$maint <- as.factor(data$maint) 
-data$doors <- as.factor(data$doors) 
-data$persons <- as.factor(data$persons) 
-data$lug_boot <- as.factor(data$lug_boot) 
-data$safety <- as.factor(data$safety) 
-data$class <- as.factor(data$class) 
+data$buying <- as.factor(data$buying)
+data$maint <- as.factor(data$maint)
+data$doors <- as.factor(data$doors)
+data$persons <- as.factor(data$persons)
+data$lug_boot <- as.factor(data$lug_boot)
+data$safety <- as.factor(data$safety)
+data$class <- as.factor(data$class)
 ```
 
 ### Summary and Missing Data Check
@@ -174,7 +174,7 @@ smote_recipe <- recipe(class ~ ., data = df_encoded) %>%
 
 df_balanced <- smote_recipe
 
-# Visualizing the distribution of class after SMOTE 
+# Visualizing the distribution of class after SMOTE
 ggplot(df_balanced, aes(x = class, fill = class)) +
   geom_bar() +
   theme_minimal() +
@@ -206,7 +206,7 @@ The "safety vs. Evaluation Class" plot shows that cars with high safety ratings 
 Generates a correlation heatmap to examine relationships between features. Helps identify redundant or highly correlated features.
 
 ```{r}
-# Correlation Heatmap
+# # Correlation Heatmap
 corr_matrix <- cor(df_balanced %>% mutate(across(where(is.factor), as.numeric)))
 corrplot(corr_matrix, method = "color", type = "lower", tl.cex = 0.8)
 title("Figure 15: Correlation Heatmap")
@@ -232,7 +232,7 @@ Maintenance costs and the number of doors have a moderate influence, with lower 
 
 ```{r}
 #Applying Random Forest after encoding and balancing the dataset
-n <- nrow(df_balanced )
+n <- nrow(df_balanced)
 trainidx <- sample.int(n, floor(n * .75))
 testidx <- setdiff(1:n, trainidx)
 train <- df_balanced[trainidx, ]
