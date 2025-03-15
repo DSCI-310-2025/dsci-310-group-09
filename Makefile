@@ -5,8 +5,18 @@ all: data/original/car.data \
 		output/matrix.RDS \
 		output/tbl_target_dist.RDS \
 		output/fig_target_dist.png \
-		output/fig_target_relation_1.png \
-		output/fig_target_relation_2.png \
+		output/fig_target_safety_1.png \
+		output/fig_target_buying_1.png \
+		output/fig_target_persons_1.png \
+		output/fig_target_maint_1.png \
+		output/fig_target_lug_boot_1.png \
+		output/fig_target_doors_1.png \
+		output/fig_target_safety_2.png \
+		output/fig_target_buying_2.png \
+		output/fig_target_persons_2.png \
+		output/fig_target_maint_2.png \
+		output/fig_target_lug_boot_2.png \
+		output/fig_target_doors_2.png \
 		output/fig_smote_dist.png \
 		output/fig_corr_heatmap.png \
 		output/fig_conf_matrix.png \
@@ -26,7 +36,8 @@ output/encoded.RDS: code/02-clean-process.R
 
 		
 # 03-visualizations.R
-output/tbl_target_dist.RDS output/fig_target_dist.png output/fig_target_relation_1.png output/fig_target_relation_2.png output/fig_smote_dist.png output/fig_corr_heatmap.png output/fig_conf_matrix.png: code/03-visualizations.R
+output/fig_target_dist.png output/fig_target_safety_1.png output/fig_target_buying_1.png output/fig_target_persons_1.png output/fig_target_maint_1.png output/fig_target_lug_boot_1.png output/fig_target_doors_1.png output/fig_target_safety_2.png output/fig_target_buying_2.png output/fig_target_persons_2.png output/fig_target_maint_2.png output/fig_target_lug_boot_2.png output/fig_target_doors_2.png  output/fig_smote_dist.png output/fig_corr_heatmap.png output/fig_conf_matrix.png: output/tbl_target_dist.RDS
+  output/tbl_target_dist.RDS: code/03-visualizations.R
 	Rscript code/03-visualizations.R --data_path=data/cleaned/cleaned.RDS --encode_path=output/encoded.RDS --matrix_path=output/matrix.RDS \
 		--output_path=output/
 
