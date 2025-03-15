@@ -60,22 +60,22 @@ library(knitr)
 Reads the dataset, assigns appropriate and meaningful column names, checks the number of rows, and convert all categorical variables into factors. The dataset consists of 1,728 rows with 6 categorical features related to car evaluation.
 
 ```{r}
-# data <- read.table("data/car.data", header = FALSE, sep = ",")
-# data|>nrow()
-# data <- data |> rename(buying = V1,
-#                maint = V2,
-#                doors = V3,
-#                persons = V4, 
-#                lug_boot = V5,
-#                safety = V6,
-#                class = V7)
-# data$buying <- as.factor(data$buying) 
-# data$maint <- as.factor(data$maint) 
-# data$doors <- as.factor(data$doors) 
-# data$persons <- as.factor(data$persons) 
-# data$lug_boot <- as.factor(data$lug_boot) 
-# data$safety <- as.factor(data$safety) 
-# data$class <- as.factor(data$class) 
+data <- read.table("/home/rstudio/work/data/original/car.data", header = FALSE, sep = ",")
+data|>nrow()
+data <- data |> rename(buying = V1,
+               maint = V2,
+               doors = V3,
+               persons = V4,
+               lug_boot = V5,
+               safety = V6,
+               class = V7)
+data$buying <- as.factor(data$buying)
+data$maint <- as.factor(data$maint)
+data$doors <- as.factor(data$doors)
+data$persons <- as.factor(data$persons)
+data$lug_boot <- as.factor(data$lug_boot)
+data$safety <- as.factor(data$safety)
+data$class <- as.factor(data$class)
 ```
 
 ### Summary and Missing Data Check
@@ -83,9 +83,9 @@ Reads the dataset, assigns appropriate and meaningful column names, checks the n
 Provides a summary of each feature, including frequency distributions and potential missing values. It also checks for class imbalance in the target variable `class`. There is no missing value in attributes.
 
 ```{r}
-# summary(data)
-# # Check for missing values
-# colSums(is.na(data))
+summary(data)
+# Check for missing values
+colSums(is.na(data))
 ```
 
 ### Class Distribution Visualization
@@ -93,14 +93,14 @@ Provides a summary of each feature, including frequency distributions and potent
 Generates a bar chart showing how the car evaluations are distributed across different categories. This helps identify class imbalances.
 
 ```{r}
-# # Frequency distribution of the target variable
-# table(data$class)
-# 
-# # Visualizing the distribution of class
-# ggplot(data, aes(x = class, fill = class)) +
-#   geom_bar() +
-#   theme_minimal() +
-#   labs(title = "Figure 1: Distribution of Car Evaluations", x = "Class", y = "Count")
+# Frequency distribution of the target variable
+table(data$class)
+
+# Visualizing the distribution of class
+ggplot(data, aes(x = class, fill = class)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(title = "Figure 1: Distribution of Car Evaluations", x = "Class", y = "Count")
 ```
 
 The dataset shows significant class imbalance, with the `unacc` (unacceptable) class dominating at 71% of the original data (1,210 out of 1,728 instances). This imbalance may skew model predictions, leading to poor performance on the minority classes (`good`, `vgood`).
@@ -110,19 +110,19 @@ The dataset shows significant class imbalance, with the `unacc` (unacceptable) c
 Creates bar charts for each feature to analyze its relationship with the target variable `class`. This helps identify important factors influencing car evaluations.
 
 ```{r}
-# # Visualizing relationships
-# features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
-# plot_list <- lapply(features, function(feature) {
-#   ggplot(data, aes(x = .data[[feature]], fill = class)) +
-#     geom_bar(position = "dodge") +
-#     theme_minimal() +
-#     labs(title = paste("Figure 2 - 7:", feature, "vs. Evaluation Class"))
-# })
-# 
-# # Display plots separately
-# for (plot in plot_list) {
-#   print(plot)
-# }
+# Visualizing relationships
+features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
+plot_list <- lapply(features, function(feature) {
+  ggplot(data, aes(x = .data[[feature]], fill = class)) +
+    geom_bar(position = "dodge") +
+    theme_minimal() +
+    labs(title = paste("Figure 2 - 7:", feature, "vs. Evaluation Class"))
+})
+
+# Display plots separately
+for (plot in plot_list) {
+  print(plot)
+}
 ```
 
 The analysis of various features—such as safety, buying price, passenger capacity, maintenance cost, luggage boot size, and number of doors—shows that the dominant classification is `unacc` (unacceptable), which indicates a pattern of negative evaluations.
@@ -138,22 +138,22 @@ The number of doors appears to have a minimal impact on the evaluations, as `una
 Encodes categorical variables into numeric values based on an ordinal scale to make them suitable for Random Forest classification model.
 
 ```{r}
-# # Ordinal Encoding of Categorical Variables
-# ordinal_mapping <- list(
-#   buying = c("low" = 1, "med" = 2, "high" = 3, "vhigh" = 4),
-#   maint = c("low" = 1, "med" = 2, "high" = 3, "vhigh" = 4),
-#   doors = c("2" = 2, "3" = 3, "4" = 4, "5more" = 5),
-#   persons = c("2" = 2, "4" = 4, "more" = 5),
-#   lug_boot = c("small" = 1, "med" = 2, "big" = 3),
-#   safety = c("low" = 1, "med" = 2, "high" = 3),
-#   class = c("unacc" = 1, "acc" = 2, "good" = 3, "vgood" = 4)
-# )
-# 
-# df_encoded <- data %>% mutate(across(names(ordinal_mapping), ~ ordinal_mapping[[cur_column()]][.]))
+# Ordinal Encoding of Categorical Variables
+ordinal_mapping <- list(
+  buying = c("low" = 1, "med" = 2, "high" = 3, "vhigh" = 4),
+  maint = c("low" = 1, "med" = 2, "high" = 3, "vhigh" = 4),
+  doors = c("2" = 2, "3" = 3, "4" = 4, "5more" = 5),
+  persons = c("2" = 2, "4" = 4, "more" = 5),
+  lug_boot = c("small" = 1, "med" = 2, "big" = 3),
+  safety = c("low" = 1, "med" = 2, "high" = 3),
+  class = c("unacc" = 1, "acc" = 2, "good" = 3, "vgood" = 4)
+)
+
+df_encoded <- data %>% mutate(across(names(ordinal_mapping), ~ ordinal_mapping[[cur_column()]][.]))
 ```
 
 ```{r}
-# head(df_encoded)
+head(df_encoded)
 ```
 
 ### Handling Class Imbalance Using SMOTE
@@ -163,40 +163,40 @@ Applies SMOTE (Synthetic Minority Over-sampling Technique) to generate synthetic
 Visualizes the new class distribution after SMOTE to ensure the dataset is balanced for better model performance.
 
 ```{r}
-# #There is a great imbalance across different classes, introducing SMOTE to generate synthetic samples in order to improve the distribution
-# df_encoded$class <- as.factor(df_encoded$class)  # Ensure class is a factor
+#There is a great imbalance across different classes, introducing SMOTE to generate synthetic samples in order to improve the distribution
+df_encoded$class <- as.factor(df_encoded$class)  # Ensure class is a factor
 
-# # Create a recipe for SMOTE
-# smote_recipe <- recipe(class ~ ., data = df_encoded) %>%
-#   step_smote(class, over_ratio = 1) %>%
-#   prep() %>%
-#   bake(new_data = NULL)
-# 
-# df_balanced <- smote_recipe
-# 
-# # Visualizing the distribution of class after SMOTE 
-# ggplot(df_balanced, aes(x = class, fill = class)) +
-#   geom_bar() +
-#   theme_minimal() +
-#   labs(title = "Figure 8: Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
+# Create a recipe for SMOTE
+smote_recipe <- recipe(class ~ ., data = df_encoded) %>%
+  step_smote(class, over_ratio = 1) %>%
+  prep() %>%
+  bake(new_data = NULL)
+
+df_balanced <- smote_recipe
+
+# Visualizing the distribution of class after SMOTE
+ggplot(df_balanced, aes(x = class, fill = class)) +
+  geom_bar() +
+  theme_minimal() +
+  labs(title = "Figure 8: Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
 ```
 
 In contrast to the original imbalanced dataset, where `unacc` dominated with 1,210 instances, all classes (`unacc`, `acc`, `good`, `vgood`) now have approximately equal counts of around 1,250 each. This reflects the effectiveness of synthetic oversampling (SMOTE) in addressing the severe class imbalance.
 
 ```{r}
-# # Visualizing relationships
-# features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
-# plot_list <- lapply(features, function(feature) {
-#   ggplot(data, aes(x = .data[[feature]], fill = class)) +
-#     geom_bar(position = "dodge") +
-#     theme_minimal() +
-#     labs(title = paste("Figure 9 - 14:",feature, "vs. Evaluation Class"))
-# })
-# 
-# # Display plots separately
-# for (plot in plot_list) {
-#   print(plot)
-# }
+# Visualizing relationships
+features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
+plot_list <- lapply(features, function(feature) {
+  ggplot(data, aes(x = .data[[feature]], fill = class)) +
+    geom_bar(position = "dodge") +
+    theme_minimal() +
+    labs(title = paste("Figure 9 - 14:",feature, "vs. Evaluation Class"))
+})
+
+# Display plots separately
+for (plot in plot_list) {
+  print(plot)
+}
 ```
 
 The "safety vs. Evaluation Class" plot shows that cars with high safety ratings mostly receive `vgood`/`good` evaluations, while `low`/`med` safety cars are often labeled `unacc`. In "buying vs. Evaluation Class," higher prices (`high`, `vhigh`) correlate with `unacc`, while affordable cars (`low`, `med`) are more likely to be `acc`/`vgood`. The "persons vs. Evaluation Class" indicates that cars with more passenger capacity tend to be `unacc`due to impracticality. For "maint vs. Evaluation Class," high maintenance costs link to `unacc`, while lower costs improve acceptability. Lastly, door count has a minimal impact, with `unacc` prevailing across categories, though cars with 5+ doors show slightly higher `acc`/`vgood`. Overall, `unacc` is associated with high-cost, low-safety, or impractical configurations, while `vgood`/`good` relate to affordability, safety, and utility.
@@ -207,9 +207,9 @@ Generates a correlation heatmap to examine relationships between features. Helps
 
 ```{r}
 # # Correlation Heatmap
-# corr_matrix <- cor(df_balanced %>% mutate(across(where(is.factor), as.numeric)))
-# corrplot(corr_matrix, method = "color", type = "lower", tl.cex = 0.8)
-# title("Figure 15: Correlation Heatmap")
+corr_matrix <- cor(df_balanced %>% mutate(across(where(is.factor), as.numeric)))
+corrplot(corr_matrix, method = "color", type = "lower", tl.cex = 0.8)
+title("Figure 15: Correlation Heatmap")
 ```
 
 This visualization illustrates the correlation and feature importance of various factors that influence car evaluation outcomes. The values range from -1, indicating a strong negative association, to +1, which indicates a strong positive association.
@@ -231,19 +231,19 @@ Maintenance costs and the number of doors have a moderate influence, with lower 
 3.  Predicts class labels for the test set and computes a confusion matrix to evaluate accuracy, sensitivity, and specificity of the model.
 
 ```{r}
-# #Applying Random Forest after encoding and balancing the dataset
-# n <- nrow(df_balanced )
-# trainidx <- sample.int(n, floor(n * .75))
-# testidx <- setdiff(1:n, trainidx)
-# train <- df_balanced[trainidx, ]
-# test <- df_balanced[testidx, ]
-# rf <- randomForest(class ~ ., data = train)
-# bag <- randomForest(class ~ ., data = train, mtry = ncol(data) - 1)
-# preds <-  tibble(truth = test$class, rf = predict(rf, test), bag = predict(bag, test))
+#Applying Random Forest after encoding and balancing the dataset
+n <- nrow(df_balanced)
+trainidx <- sample.int(n, floor(n * .75))
+testidx <- setdiff(1:n, trainidx)
+train <- df_balanced[trainidx, ]
+test <- df_balanced[testidx, ]
+rf <- randomForest(class ~ ., data = train)
+bag <- randomForest(class ~ ., data = train, mtry = ncol(data) - 1)
+preds <-  tibble(truth = test$class, rf = predict(rf, test), bag = predict(bag, test))
 ```
 
 ```{r}
-# predictions <- predict(rf, test)
+predictions <- predict(rf, test)
 
 conf_matrix <- confusionMatrix(predictions, test$class)
 conf_matrix
@@ -256,16 +256,16 @@ The model achieved an overall accuracy of approximately 99%, correctly classifyi
 We visualize the confusion matrix to get a better idea of the accuracy of the model.
 
 ```{R}
-# # Convert confusion matrix to data frame
-# conf_df <- data.frame(conf_matrix$table)
-# 
-# # Plot Confusion Matrix as Heatmap
-# ggplot(conf_df, aes(x = Prediction, y = Reference, fill = Freq)) +
-#   geom_tile() +
-#   geom_text(aes(label = Freq), color = "black", size = 5) +
-#   scale_fill_gradient(low = "white", high = "lightblue") +
-#   labs(title = "Figure 16: Confusion Matrix Heatmap", x = "Predicted Class", y = "Actual Class") +
-#   theme_minimal()
+# Convert confusion matrix to data frame
+conf_df <- data.frame(conf_matrix$table)
+
+# Plot Confusion Matrix as Heatmap
+ggplot(conf_df, aes(x = Prediction, y = Reference, fill = Freq)) +
+  geom_tile() +
+  geom_text(aes(label = Freq), color = "black", size = 5) +
+  scale_fill_gradient(low = "white", high = "lightblue") +
+  labs(title = "Figure 16: Confusion Matrix Heatmap", x = "Predicted Class", y = "Actual Class") +
+  theme_minimal()
 ```
 
 The diagonal elements represent correct classifications, which means the model accurately predicted those classes of car. The off-diagonal elements represent incorrect classifications, which shows errors in the model made. Most of the predictions fall on the diagonal line, suggesting that the model performs very well in predicting the dataset. There are few cases of misclassification, which means that the accuracy rate is high.
