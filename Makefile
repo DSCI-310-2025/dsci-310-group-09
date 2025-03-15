@@ -30,7 +30,7 @@ index.html:	data/original/car.data \
 			reports/car_acceptability_category_prediction.html \
 			reports/car_acceptability_category_prediction.pdf 
 			quarto render reports/car_acceptability_category_prediction.qmd
-			mv reports/car_acceptability_category_prediction.html docs/index.html
+			cp reports/car_acceptability_category_prediction.html docs/index.html
 
 # 01-load.R
 data/original/car.data: code/01-load.R 
