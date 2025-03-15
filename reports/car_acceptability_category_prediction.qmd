@@ -72,7 +72,7 @@ knitr::kable(freq_table, col.names = c("class", "Frequency"))
 ```
 
 
-![Distribution of Car Evaluations](../output/fig_target_dist.png){#fig-car_distribution_plot}
+![Distribution of Car Evaluations](../output/fig_target_dist.png){#fig-car_distribution_plot width="60%"}
 
 The dataset shows significant class imbalance as shown in @tbl-frequency_distri_car and @fig-car_distribution_plot, with the `unacc` (unacceptable) class dominating at 71% of the original data (1,210 out of 1,728 instances). This imbalance may skew model predictions, leading to poor performance on the minority classes (`good`, `vgood`).
 
@@ -81,17 +81,17 @@ The dataset shows significant class imbalance as shown in @tbl-frequency_distri_
 Creates bar charts for each feature to analyze its relationship with the target variable `class`. This helps identify important factors influencing car evaluations.
 
 
-![Safety vs. Evaluation Class](../output/fig_relation_safety_1.png){#fig-car_safety_plot}
+![Safety vs. Evaluation Class](../output/fig_relation_safety_1.png){#fig-car_safety_plot width="60%"}
 
-![Buying vs. Evaluation Class](../output/fig_relation_buying_1.png){#fig-car_buying_plot}
+![Buying vs. Evaluation Class](../output/fig_relation_buying_1.png){#fig-car_buying_plot width="60%"}
 
-![Number of Passenger vs. Evaluation Class](../output/fig_relation_persons_1.png){#fig-car_persons_plot}
+![Number of Passenger vs. Evaluation Class](../output/fig_relation_persons_1.png){#fig-car_persons_plot width="60%"}
 
-![Maintenance vs. Evaluation Class](../output/fig_relation_maint_1.png){#fig-car_maintenance_plot}
+![Maintenance vs. Evaluation Class](../output/fig_relation_maint_1.png){#fig-car_maintenance_plot width="60%"}
 
-![Luggage Boot Size vs. Evaluation Class](../output/fig_relation_lug_boot_1.png){#fig-car_luggage_plot}
+![Luggage Boot Size vs. Evaluation Class](../output/fig_relation_lug_boot_1.png){#fig-car_luggage_plot width="60%"}
 
-![Number of Doors vs. Evaluation Class](../output/fig_relation_doors_1.png){#fig-car_doors_plot}
+![Number of Doors vs. Evaluation Class](../output/fig_relation_doors_1.png){#fig-car_doors_plot width="60%"}
 
 
 The analysis of various features—such as safety @fig-car_safety_plot, buying price @fig-car_buying_plot, passenger capacity @fig-car_persons_plot, maintenance cost @fig-car_maintenance_plot, luggage boot size @fig-car_luggage_plot, and number of doors—shows @fig-car_doors_plot that the dominant classification is `unacc` (unacceptable), which indicates a pattern of negative evaluations.
@@ -118,29 +118,29 @@ knitr::kable(head(encoded_variable_table, 5))
 
 There is a great imbalance across different classes, introducing SMOTE (Synthetic Minority Over-sampling Technique) to generate synthetic samples in order, balance the dataset, reducing bias in classification, which improves the distribution.
 
-![Distribution of Car Evaluations After Feature Engineering](../output/fig_smote_dist.png){#fig-car_distri_after_enginerring_plot}
+![Distribution of Car Evaluations After Feature Engineering](../output/fig_smote_dist.png){#fig-car_distri_after_enginerring_plot width="60%"}
 
 Visualizes the new class distribution after SMOTE to ensure the dataset is balanced for better model performance. In contrast to the original imbalanced dataset, where `unacc` dominated with 1,210 instances, all classes (`unacc`, `acc`, `good`, `vgood`) now have approximately equal counts of around 1,250 each as shown in @fig-car_distri_after_enginerring_plot. This reflects the effectiveness of synthetic oversampling (SMOTE) in addressing the severe class imbalance.
 
 ### Visualizing relationships with Class Balanced
 
-![Safety vs. Evaluation Class with Class Balance](../output/fig_relation_safety_2.png){#fig-car_safety_balance_plot}
+![Safety vs. Evaluation Class with Class Balance](../output/fig_relation_safety_2.png){#fig-car_safety_balance_plot width="60%"}
 
-![Buying vs. Evaluation Class with Class Balance](../output/fig_relation_buying_2.png){#fig-car_buying_balance_plot}
+![Buying vs. Evaluation Class with Class Balance](../output/fig_relation_buying_2.png){#fig-car_buying_balance_plot width="60%"}
 
-![Number of Passenger vs. Evaluation Class with Class Balance](../output/fig_relation_persons_2.png){#fig-car_persons_balance_plot}
+![Number of Passenger vs. Evaluation Class with Class Balance](../output/fig_relation_persons_2.png){#fig-car_persons_balance_plot width="60%"}
 
-![Maintenance vs. Evaluation Class with Class Balance](../output/fig_relation_maint_2.png){#fig-car_maintenance_balance_plot}
+![Maintenance vs. Evaluation Class with Class Balance](../output/fig_relation_maint_2.png){#fig-car_maintenance_balance_plot width="60%"}
 
-![Luggage Boot Size vs. Evaluation Class with Class Balance](../output/fig_relation_lug_boot_2.png){#fig-car_luggage_balance_plot}
+![Luggage Boot Size vs. Evaluation Class with Class Balance](../output/fig_relation_lug_boot_2.png){#fig-car_luggage_balance_plot width="60%"}
 
-![Number of Doors vs. Evaluation Class with Class Balance](../output/fig_relation_doors_2.png){#fig-car_doors_balance_plot}
+![Number of Doors vs. Evaluation Class with Class Balance](../output/fig_relation_doors_2.png){#fig-car_doors_balance_plot width="60%"}
 
 The "safety vs. Evaluation Class" plot @fig-car_safety_balance_plot shows that cars with high safety ratings mostly receive `vgood`/`good` evaluations, while `low`/`med` safety cars are often labeled `unacc`. In "buying vs. Evaluation Class" @fig-car_buying_balance_plot, higher prices (`high`, `vhigh`) correlate with `unacc`, while affordable cars (`low`, `med`) are more likely to be `acc`/`vgood`. The "Number of Passenger vs. Evaluation Class" @fig-car_persons_balance_plot. indicates that cars with more passenger capacity tend to be `unacc`due to impracticality. For "maint vs. Evaluation Class" @fig-car_maintenance_balance_plot, high maintenance costs link to `unacc`, while lower costs improve acceptability. Lastly, door count has a minimal impact as shown in @fig-car_doors_balance_plot, with `unacc` prevailing across categories, though cars with 5+ doors show slightly higher `acc`/`vgood`. Overall, `unacc` is associated with high-cost, low-safety, or impractical configurations, while `vgood`/`good` relate to affordability, safety, and utility.
 
 ### Correlation Heatmap
 
-![Correlation Heatmap](../output/fig_corr_heatmap.png){#fig-corr_heatmap}
+![Correlation Heatmap](../output/fig_corr_heatmap.png){#fig-corr_heatmap width="60%"}
 
 Generates a correlation heatmap to examine relationships between features. Helps identify redundant or highly correlated features. This visualization @fig-corr_heatmap illustrates the correlation and feature importance of various factors that influence car evaluation outcomes. The values range from -1, indicating a strong negative association, to +1, which indicates a strong positive association.
 
@@ -192,7 +192,7 @@ confusion_matrix <- readRDS("../output/matrix.RDS")
 knitr::kable(confusion_matrix$table)
 ```
 
-![Confusion Matrix Heatmap](../output/fig_conf_matrix.png){#fig-confusion_maxtrix__heatmap}
+![Confusion Matrix Heatmap](../output/fig_conf_matrix.png){#fig-confusion_maxtrix__heatmap width="60%"}
 
 In @fig-confusion_maxtrix__heatmap and @tbl-confusion_matrix_table, the diagonal elements represent correct classifications, which means the model accurately predicted those classes of car. The off-diagonal elements represent incorrect classifications, which shows errors in the model made. Most of the predictions fall on the diagonal line, suggesting that the model performs very well in predicting the dataset. There are few cases of misclassification, which means that the accuracy rate is high.
 
