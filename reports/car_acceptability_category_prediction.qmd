@@ -1,13 +1,13 @@
 ---
 title: "Car Acceptability Category Prediction Analysis"
-author: "Jiaming Change, Yicheng Huang, Effie Wang, Brianna Zhou"
+author: "Jiaming Change, Yicheng Huang, Effie Wang, & Brianna Zhou"
 format: 
   html:
     number-figures: true
     number-tables: true
     embed-resources: true
 editor: source
-bibliography: ../references.bib
+bibliography: references.bib
 toc: true
 execute:
    echo: false
@@ -34,58 +34,28 @@ This project aims to develop a classification model to predict car acceptability
 
 ## Method & Results
 
-### Install and Loading Libraries
-
-Installs and loads necessary libraries for data processing, visualization, and machine learning. The key libraries include `randomForest` for classification, `caret` for model evaluation, `themis` for handling imbalanced data using SMOTE, and `corrplot`for visualizing correlations.
-
 ```{r}
 #library(tidyverse)
-library(randomForest)  
-library(caret) 
-library(corrplot) # For correlation heatmap
-library(themis) # For SMOTE
-library(recipes) # FOR SMOTE
-#library(knitr)
-```
-
-```{r}
-# this would pull the dataset from original url, extract the zip file and store everything in data directory
-# url <- "https://archive.ics.uci.edu/static/public/19/car+evaluation.zip"
-# download.file(url, destfile = "car_evaluation.zip")
-# unzip("car_evaluation.zip", exdir = "data")
+library(knitr)
 ```
 
 ### Importing Data & Data Exploration
 
-Reads the dataset, assigns appropriate and meaningful column names, checks the number of rows, and convert all categorical variables into factors. The dataset consists of 1,728 rows with 6 categorical features related to car evaluation.
+Reads the dataset, assigns appropriate and meaningful column names, checks the number of rows, and convert all categorical variables into factors. The dataset consists of 1,728 rows with 6 categorical features related to car evaluation. 
 
 ```{r}
-data <- read.table("../data/car.data", header = FALSE, sep = ",")
-data|>nrow()
-data <- data |> rename(buying = V1,
-               maint = V2,
-               doors = V3,
-               persons = V4, 
-               lug_boot = V5,
-               safety = V6,
-               class = V7)
-data$buying <- as.factor(data$buying) 
-data$maint <- as.factor(data$maint) 
-data$doors <- as.factor(data$doors) 
-data$persons <- as.factor(data$persons) 
-data$lug_boot <- as.factor(data$lug_boot) 
-data$safety <- as.factor(data$safety) 
-data$class <- as.factor(data$class) 
+#| label: tbl-cleaned_data
+#| tbl-cap: Cleaned Data
+cleaned_data <- readRDS("../data/cleaned/cleaned.RDS")
+knitr::kable(head(cleaned_data,5))
+
 ```
 
 ### Summary and Missing Data Check
 
 Provides a summary of each feature, including frequency distributions and potential missing values. It also checks for class imbalance in the target variable `class`. There is no missing value in attributes.
-
 ```{r}
-summary(data)
-# Check for missing values
-colSums(is.na(data))
+summary(cleaned_data)
 ```
 
 ### Class Distribution Visualization
@@ -93,24 +63,16 @@ colSums(is.na(data))
 Generates a bar chart showing how the car evaluations are distributed across different categories. This helps identify class imbalances.
 
 ```{r}
-# Frequency distribution of the target variable
-
 #| label: tbl-frequency_distri_car  
 #| tbl-cap: Frequency distribution of the Car Acceptability Category.
 
-table(data$class)
+freq_table <- readRDS("../output/tbl_target_dist.RDS")
+knitr::kable(freq_table, col.names = c("class", "Frequency"))
 
 ```
 
-```{r}
-# Visualizing the distribution of class
-ggplot(data, aes(x = class, fill = class)) +
-  geom_bar() +
-  theme_minimal() +
-  labs(title = "Figure 1: Distribution of Car Evaluations", x = "Class", y = "Count")
-```
 
-![Distribution of Car Evaluations](){#fig-car_distribution_plot}
+![Distribution of Car Evaluations](../output/fig_target_dist.png){#fig-car_distribution_plot}
 
 The dataset shows significant class imbalance as shown in @tbl-frequency_distri_car and @fig-car_distribution_plot, with the `unacc` (unacceptable) class dominating at 71% of the original data (1,210 out of 1,728 instances). This imbalance may skew model predictions, leading to poor performance on the minority classes (`good`, `vgood`).
 
@@ -118,21 +80,6 @@ The dataset shows significant class imbalance as shown in @tbl-frequency_distri_
 
 Creates bar charts for each feature to analyze its relationship with the target variable `class`. This helps identify important factors influencing car evaluations.
 
-```{r}
-# Visualizing relationships
-features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
-plot_list <- lapply(features, function(feature) {
-  ggplot(data, aes(x = .data[[feature]], fill = class)) +
-    geom_bar(position = "dodge") +
-    theme_minimal() +
-    labs(title = paste("Figure 2 - 7:", feature, "vs. Evaluation Class"))
-})
-
-# Display plots separately
-for (plot in plot_list) {
-  print(plot)
-}
-```
 
 ![Safety vs. Evaluation Class](){#fig-car_safety_plot}
 
@@ -144,7 +91,7 @@ for (plot in plot_list) {
 
 ![Luggage Boot Size vs. Evaluation Class](){#fig-car_luggage_plot}
 
-![Number of Doors vs. Evaluation Class](){#fig-car_doors_plot}
+![Number of Doors vs. Evaluation Class](../output/fig_target_relation_1.png){#fig-car_doors_plot}
 
 
 The analysis of various features—such as safety @fig-car_safety_plot, buying price @fig-car_buying_plot, passenger capacity @fig-car_persons_plot, maintenance cost @fig-car_maintenance_plot, luggage boot size @fig-car_luggage_plot, and number of doors—shows @fig-car_doors_plot that the dominant classification is `unacc` (unacceptable), which indicates a pattern of negative evaluations.
@@ -157,71 +104,25 @@ The number of doors appears to have a minimal impact on the evaluations, as `una
 
 ### Feature Engineering and Data Resampling
 
-Encodes categorical variables into numeric values based on an ordinal scale to make them suitable for Random Forest classification model.
+Encodes categorical variables into numeric values based on an ordinal scale to make them suitable for Random Forest classification model as shown in @tbl-encoded_variable.
 
 ```{r}
-# Ordinal Encoding of Categorical Variables
-ordinal_mapping <- list(
-  buying = c("low" = 1, "med" = 2, "high" = 3, "vhigh" = 4),
-  maint = c("low" = 1, "med" = 2, "high" = 3, "vhigh" = 4),
-  doors = c("2" = 2, "3" = 3, "4" = 4, "5more" = 5),
-  persons = c("2" = 2, "4" = 4, "more" = 5),
-  lug_boot = c("small" = 1, "med" = 2, "big" = 3),
-  safety = c("low" = 1, "med" = 2, "high" = 3),
-  class = c("unacc" = 1, "acc" = 2, "good" = 3, "vgood" = 4)
-)
+#| label: tbl-encoded_variable
+#| tbl-cap: Ordinal Encoding of Categorical Variables.
 
-df_encoded <- data %>% mutate(across(names(ordinal_mapping), ~ ordinal_mapping[[cur_column()]][.]))
-```
-
-```{r}
-head(df_encoded)
+encoded_variable_table <- readRDS("../output/encoded.RDS")
+knitr::kable(head(encoded_variable_table, 5))
 ```
 
 ### Handling Class Imbalance Using SMOTE
 
-Applies SMOTE (Synthetic Minority Over-sampling Technique) to generate synthetic samples and balance the dataset, reducing bias in classification.
+There is a great imbalance across different classes, introducing SMOTE (Synthetic Minority Over-sampling Technique) to generate synthetic samples in order, balance the dataset, reducing bias in classification, which improves the distribution.
 
-Visualizes the new class distribution after SMOTE to ensure the dataset is balanced for better model performance.
+![Distribution of Car Evaluations After Feature Engineering](../output/fig_smote_dist.png){#fig-car_distri_after_enginerring_plot}
 
-```{r}
-#There is a great imbalance across different classes, introducing SMOTE to generate synthetic samples in order to improve the distribution
-df_encoded$class <- as.factor(df_encoded$class)  # Ensure class is a factor
+Visualizes the new class distribution after SMOTE to ensure the dataset is balanced for better model performance. In contrast to the original imbalanced dataset, where `unacc` dominated with 1,210 instances, all classes (`unacc`, `acc`, `good`, `vgood`) now have approximately equal counts of around 1,250 each as shown in @fig-car_distri_after_enginerring_plot. This reflects the effectiveness of synthetic oversampling (SMOTE) in addressing the severe class imbalance.
 
-# Create a recipe for SMOTE
-smote_recipe <- recipe(class ~ ., data = df_encoded) %>%
-  step_smote(class, over_ratio = 1) %>%
-  prep() %>%
-  bake(new_data = NULL)
-
-df_balanced <- smote_recipe
-
-# Visualizing the distribution of class after SMOTE 
-ggplot(df_balanced, aes(x = class, fill = class)) +
-  geom_bar() +
-  theme_minimal() +
-  labs(title = "Figure 8: Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
-```
-
-![Distribution of Car Evaluations After Feature Engineering](){#fig-car_distri_after_enginerring_plot}
-
-In contrast to the original imbalanced dataset, where `unacc` dominated with 1,210 instances, all classes (`unacc`, `acc`, `good`, `vgood`) now have approximately equal counts of around 1,250 each as shown in @fig-car_distri_after_enginerring_plot. This reflects the effectiveness of synthetic oversampling (SMOTE) in addressing the severe class imbalance.
-
-```{r}
-# Visualizing relationships
-features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
-plot_list <- lapply(features, function(feature) {
-  ggplot(data, aes(x = .data[[feature]], fill = class)) +
-    geom_bar(position = "dodge") +
-    theme_minimal() +
-    labs(title = paste("Figure 9 - 14:",feature, "vs. Evaluation Class"))
-})
-
-# Display plots separately
-for (plot in plot_list) {
-  print(plot)
-}
-```
+### Visualizing relationships with Class Balanced
 
 ![Safety vs. Evaluation Class with Class Balance](){#fig-car_safety_balance_plot}
 
@@ -239,18 +140,9 @@ The "safety vs. Evaluation Class" plot @fig-car_safety_balance_plot shows that c
 
 ### Correlation Heatmap
 
-Generates a correlation heatmap to examine relationships between features. Helps identify redundant or highly correlated features.
+![Correlation Heatmap](../output/fig_corr_heatmap.png){#fig-corr_heatmap}
 
-```{r}
-# Correlation Heatmap
-corr_matrix <- cor(df_balanced %>% mutate(across(where(is.factor), as.numeric)))
-corrplot(corr_matrix, method = "color", type = "lower", tl.cex = 0.8)
-title("Figure 15: Correlation Heatmap")
-```
-
-![Correlation Heatmap](){#fig-corr_heatmap}
-
-This visualization @fig-corr_heatmap illustrates the correlation and feature importance of various factors that influence car evaluation outcomes. The values range from -1, indicating a strong negative association, to +1, which indicates a strong positive association.
+Generates a correlation heatmap to examine relationships between features. Helps identify redundant or highly correlated features. This visualization @fig-corr_heatmap illustrates the correlation and feature importance of various factors that influence car evaluation outcomes. The values range from -1, indicating a strong negative association, to +1, which indicates a strong positive association.
 
 The strongest predictors are safety ratings and buying prices. Higher safety ratings are strongly associated with more favorable evaluations (such as "very good" or "good"), while cars with high or very high buying prices tend to receive negative outcomes (such as "unacceptable").
 
@@ -268,29 +160,23 @@ Maintenance costs and the number of doors have a moderate influence, with lower 
 
 3.  Predicts class labels for the test set and computes a confusion matrix to evaluate accuracy, sensitivity, and specificity of the model.
 
-```{r}
-#Applying Random Forest after encoding and balancing the dataset
-n <- nrow(df_balanced )
-trainidx <- sample.int(n, floor(n * .75))
-testidx <- setdiff(1:n, trainidx)
-train <- df_balanced[trainidx, ]
-test <- df_balanced[testidx, ]
-rf <- randomForest(class ~ ., data = train)
-bag <- randomForest(class ~ ., data = train, mtry = ncol(data) - 1)
-preds <-  tibble(truth = test$class, rf = predict(rf, test), bag = predict(bag, test))
-```
 
 ```{r}
-predictions <- predict(rf, test)
+#| label: tbl-overall_confusion_matrix
+#| tbl-cap: Confusion Matrix of Random Forest Model
 
-conf_matrix <- confusionMatrix(predictions, test$class)
-conf_matrix
+confusion_matrix <- readRDS("../output/matrix.RDS")
+knitr::kable(confusion_matrix$overall)
+knitr::kable(confusion_matrix$byClass)
 
-accuracy <- round(conf_matrix$overall[1],3)
-kappa <- round(conf_matrix$overall[2],3)
-accuracy_pecentage <- round(conf_matrix$overall[1]*100)
+accuracy <- round(confusion_matrix$overall["Accuracy"], 3)
+accuracy_percentage <- accuracy*100
+kappa <- round(confusion_matrix$overall["Kappa"], 3)
 
 ```
+
+
+The confusion matrix summarizes the performance of the Random Forest model by showing the number of correct and incorrect predictions across different classes. It provides insights into how well the model distinguishes between categories by comparing actual vs. predicted values as shown in @tbl-overall_confusion_matrix. In addition, it provides per-class evaluation metrics, giving detailed insights into how well the model performs for each individual class.
 
 The model achieved an overall accuracy approximately of `{r} accuracy`, correctly classifying cars in most cases. The approximate Kappa score `{r} kappa` indicates a strong agreement between predictions and actual labels, while the high sensitivity and specificity values demonstrate excellent detection ability across all classes.
 
@@ -298,26 +184,21 @@ The model achieved an overall accuracy approximately of `{r} accuracy`, correctl
 
 We visualize the confusion matrix to get a better idea of the accuracy of the model.
 
-```{R}
-# Convert confusion matrix to data frame
-conf_df <- data.frame(conf_matrix$table)
+```{r}
+#| label: tbl-confusion_matrix_table
+#| tbl-cap: Confusion Matrix of Random Forest Model
 
-# Plot Confusion Matrix as Heatmap
-ggplot(conf_df, aes(x = Prediction, y = Reference, fill = Freq)) +
-  geom_tile() +
-  geom_text(aes(label = Freq), color = "black", size = 5) +
-  scale_fill_gradient(low = "white", high = "lightblue") +
-  labs(title = "Figure 16: Confusion Matrix Heatmap", x = "Predicted Class", y = "Actual Class") +
-  theme_minimal()
+confusion_matrix <- readRDS("../output/matrix.RDS")
+knitr::kable(confusion_matrix$table)
 ```
 
-![Confusion Matrix Heatmap](){#fig-confusion_maxtrix__heatmap}
+![Confusion Matrix Heatmap](../output/fig_conf_matrix.png){#fig-confusion_maxtrix__heatmap}
 
-In @fig-confusion_maxtrix__heatmap, the diagonal elements represent correct classifications, which means the model accurately predicted those classes of car. The off-diagonal elements represent incorrect classifications, which shows errors in the model made. Most of the predictions fall on the diagonal line, suggesting that the model performs very well in predicting the dataset. There are few cases of misclassification, which means that the accuracy rate is high.
+In @fig-confusion_maxtrix__heatmap and @tbl-confusion_matrix_table, the diagonal elements represent correct classifications, which means the model accurately predicted those classes of car. The off-diagonal elements represent incorrect classifications, which shows errors in the model made. Most of the predictions fall on the diagonal line, suggesting that the model performs very well in predicting the dataset. There are few cases of misclassification, which means that the accuracy rate is high.
 
 ## Discussion
 
-Our random forest model achieves approximate accuracy of `{r} accuracy_pecentage` and a strong Kappa statistic about `{r} kappa`, which shows it effectively predicts car acceptability base on the six measurements.
+Our random forest model achieves approximate accuracy of `{r} accuracy_percentage`% and a strong Kappa statistic about `{r} kappa`, which shows it effectively predicts car acceptability base on the six measurements.
 
 The results we got were very much in line with our expectations as our model performed very well. Our model correctly classifies almost all cars into the correct acceptable categories.
 
