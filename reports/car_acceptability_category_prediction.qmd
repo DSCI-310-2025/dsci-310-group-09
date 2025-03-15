@@ -81,17 +81,17 @@ The dataset shows significant class imbalance as shown in @tbl-frequency_distri_
 Creates bar charts for each feature to analyze its relationship with the target variable `class`. This helps identify important factors influencing car evaluations.
 
 
-![Safety vs. Evaluation Class](){#fig-car_safety_plot}
+![Safety vs. Evaluation Class](../output/fig_relation_safety_1.png){#fig-car_safety_plot}
 
-![Buying vs. Evaluation Class](){#fig-car_buying_plot}
+![Buying vs. Evaluation Class](../output/fig_relation_buying_1.png){#fig-car_buying_plot}
 
-![Number of Passenger vs. Evaluation Class](){#fig-car_persons_plot}
+![Number of Passenger vs. Evaluation Class](../output/fig_relation_persons_1.png){#fig-car_persons_plot}
 
-![Maintenance vs. Evaluation Class](){#fig-car_maintenance_plot}
+![Maintenance vs. Evaluation Class](../output/fig_relation_maint_1.png){#fig-car_maintenance_plot}
 
-![Luggage Boot Size vs. Evaluation Class](){#fig-car_luggage_plot}
+![Luggage Boot Size vs. Evaluation Class](../output/fig_relation_lug_boot_1.png){#fig-car_luggage_plot}
 
-![Number of Doors vs. Evaluation Class](../output/fig_target_relation_1.png){#fig-car_doors_plot}
+![Number of Doors vs. Evaluation Class](../output/fig_relation_doors_1.png){#fig-car_doors_plot}
 
 
 The analysis of various features—such as safety @fig-car_safety_plot, buying price @fig-car_buying_plot, passenger capacity @fig-car_persons_plot, maintenance cost @fig-car_maintenance_plot, luggage boot size @fig-car_luggage_plot, and number of doors—shows @fig-car_doors_plot that the dominant classification is `unacc` (unacceptable), which indicates a pattern of negative evaluations.
@@ -124,17 +124,17 @@ Visualizes the new class distribution after SMOTE to ensure the dataset is balan
 
 ### Visualizing relationships with Class Balanced
 
-![Safety vs. Evaluation Class with Class Balance](){#fig-car_safety_balance_plot}
+![Safety vs. Evaluation Class with Class Balance](../output/fig_relation_safety_2.png){#fig-car_safety_balance_plot}
 
-![Buying vs. Evaluation Class with Class Balance](){#fig-car_buying_balance_plot}
+![Buying vs. Evaluation Class with Class Balance](../output/fig_relation_buying_2.png){#fig-car_buying_balance_plot}
 
-![Number of Passenger vs. Evaluation Class with Class Balance](){#fig-car_persons_balance_plot}
+![Number of Passenger vs. Evaluation Class with Class Balance](../output/fig_relation_persons_2.png){#fig-car_persons_balance_plot}
 
-![Maintenance vs. Evaluation Class with Class Balance](){#fig-car_maintenance_balance_plot}
+![Maintenance vs. Evaluation Class with Class Balance](../output/fig_relation_maint_2.png){#fig-car_maintenance_balance_plot}
 
-![Luggage Boot Size vs. Evaluation Class with Class Balance](){#fig-car_luggage_balance_plot}
+![Luggage Boot Size vs. Evaluation Class with Class Balance](../output/fig_relation_lug_boot_2.png){#fig-car_luggage_balance_plot}
 
-![Number of Doors vs. Evaluation Class with Class Balance](){#fig-car_doors_balance_plot}
+![Number of Doors vs. Evaluation Class with Class Balance](../output/fig_relation_doors_2.png){#fig-car_doors_balance_plot}
 
 The "safety vs. Evaluation Class" plot @fig-car_safety_balance_plot shows that cars with high safety ratings mostly receive `vgood`/`good` evaluations, while `low`/`med` safety cars are often labeled `unacc`. In "buying vs. Evaluation Class" @fig-car_buying_balance_plot, higher prices (`high`, `vhigh`) correlate with `unacc`, while affordable cars (`low`, `med`) are more likely to be `acc`/`vgood`. The "Number of Passenger vs. Evaluation Class" @fig-car_persons_balance_plot. indicates that cars with more passenger capacity tend to be `unacc`due to impracticality. For "maint vs. Evaluation Class" @fig-car_maintenance_balance_plot, high maintenance costs link to `unacc`, while lower costs improve acceptability. Lastly, door count has a minimal impact as shown in @fig-car_doors_balance_plot, with `unacc` prevailing across categories, though cars with 5+ doors show slightly higher `acc`/`vgood`. Overall, `unacc` is associated with high-cost, low-safety, or impractical configurations, while `vgood`/`good` relate to affordability, safety, and utility.
 
