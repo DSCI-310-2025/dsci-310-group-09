@@ -87,6 +87,38 @@ docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -
 ---------------------------  
 5. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
 
+### Usage of Makefile
+#### Running the Entire Workflow
+The Makefile automates the entire workflow, from data acquisition to final report generation.
+To execute all steps, use:
+```
+make all
+```
+1. Download and Extract Data:
+```
+make data/original/car.data
+```
+2. Preprocess and Encode Data:
+```
+make output/encoded.RDS
+```
+3. Generate Visualizations:
+```
+make output/tbl_target_dist.RDS
+```
+4. Perform Analysis:
+```
+make output/matrix.RDS
+```
+5. Generate Reports (HTML & PDF):
+```
+make reports/car_acceptability_category_prediction.html
+make reports/car_acceptability_category_prediction.pdf
+```
+To remove all generated files and reset the project, use:
+```
+make clean
+```
 
 
 ## Dependencies
@@ -97,6 +129,8 @@ docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -
     - corrplot
     - themis
     - recipes
+- Quarto
+- Docker
 
 ## license
 This Car Acceptability Category Prediction is licensed under MIT License.
