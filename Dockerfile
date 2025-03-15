@@ -9,5 +9,6 @@ RUN Rscript -e "install.packages(c('renv', 'remotes'), repos = c(CRAN = 'https:/
     Rscript -e "remotes::install_version('themis', version = '1.0.3', repos = 'https://cloud.r-project.org')" && \
     Rscript -e "remotes::install_version('recipes', version = '1.1.1', repos = 'https://cloud.r-project.org')" && \
     Rscript -e "remotes::install_version('randomForest', version = '4.7-1.2', repos = 'https://cloud.r-project.org')"&&\
-    Rscript -e "remotes::install_version('docopt', version = '0.7.1', repos = 'https://cloud.r-project.org')"
+    Rscript -e "remotes::install_version('docopt', version = '0.7.1', repos = 'https://cloud.r-project.org')"&&\
+    Rscript -e "remotes::install_version('ggcorrplot', version = '0.1.4.1', repos = 'https://cloud.r-project.org')"
 
