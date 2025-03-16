@@ -94,6 +94,13 @@ To execute all steps, run:
 ```
 make all
 ```
+which removes all older generated files, runs all scripts, and renders Quarto documents.
+
+To excute all steps without clean, run:
+```
+make report
+```
+
 #### Individual Commands
 1. Download and Extract Data:
 ```
@@ -113,7 +120,7 @@ make output/tbl_target_dist.RDS
 ```
 5. Generate Reports (HTML & PDF):
 ```
-make reports/index.html
+make index.html
 make reports/car_acceptability_category_prediction.html
 make reports/car_acceptability_category_prediction.pdf
 ```
@@ -131,9 +138,17 @@ make clean
     - corrplot
     - themis
     - recipes
+    - docopt
+    - utils
+    - readr
+    - dplyr
+    - knitr
+    - ggplot2
+    - ggcorrplot
+    - tibble
 - Quarto
 - Docker
 - GNU Make (v4.2.1 or later)
 
-## license
-This Car Acceptability Category Prediction is licensed under MIT License and the CC0 License, allowing unrestricted use of both code and non-code materials.
+## License
+This Car Acceptability Category Prediction is licensed under MIT License and Creative Commons Legal Code, allowing unrestricted use of both code and non-code materials.
