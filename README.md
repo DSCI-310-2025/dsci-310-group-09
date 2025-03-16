@@ -89,11 +89,12 @@ docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -
 
 ### Usage of Makefile
 #### Running the Entire Workflow
-The Makefile automates the entire workflow, from data acquisition to final report generation.
-To execute all steps, use:
+The Makefile automates the workflow, from data acquisition to report generation.
+To execute all steps, run:
 ```
 make all
 ```
+#### Individual Commands
 1. Download and Extract Data:
 ```
 make data/original/car.data
@@ -102,16 +103,17 @@ make data/original/car.data
 ```
 make output/encoded.RDS
 ```
-3. Generate Visualizations:
-```
-make output/tbl_target_dist.RDS
-```
-4. Perform Analysis:
+3. Perform Data Analysis and Modelling:
 ```
 make output/matrix.RDS
 ```
+4. Generate Visualizations and Statistical Summaries:
+```
+make output/tbl_target_dist.RDS
+```
 5. Generate Reports (HTML & PDF):
 ```
+make reports/index.html
 make reports/car_acceptability_category_prediction.html
 make reports/car_acceptability_category_prediction.pdf
 ```
@@ -131,6 +133,7 @@ make clean
     - recipes
 - Quarto
 - Docker
+- GNU Make (v4.2.1 or later)
 
 ## license
-This Car Acceptability Category Prediction is licensed under MIT License.
+This Car Acceptability Category Prediction is licensed under MIT License and the CC0 License, allowing unrestricted use of both code and non-code materials.
