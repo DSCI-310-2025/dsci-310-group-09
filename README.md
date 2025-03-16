@@ -151,4 +151,4 @@ make clean
 - GNU Make (v4.2.1 or later)
 
 ## License
-This Car Acceptability Category Prediction is licensed under MIT License and Creative Commons Legal Code, allowing unrestricted use of both code and non-code materials.
+This Car Acceptability Category Prediction is licensed under MIT License and Creative Commons License, allowing unrestricted use of both code and non-code materials.
