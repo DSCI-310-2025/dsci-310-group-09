@@ -5,6 +5,7 @@ library(knitr)
 library(dplyr)
 library(ggplot2)
 library(ggcorrplot)
+source("R/generate_barplot.R")
 
 
 "This script reads processed data and create visualizations
@@ -26,11 +27,15 @@ data <- read_rds(opt$data_path)
 write_rds(table(data$class), paste0(opt$output_path, "tbl_target_dist.RDS"))
 
 # Visualizing the distribution of class
-ggplot(data, aes(x = class, fill = class)) +
-  geom_bar() +
-  theme_minimal() +
-  labs(title = "Figure 1: Distribution of Car Evaluations", x = "Class", y = "Count")
+# ggplot(data, aes(x = class, fill = class)) +
+#   geom_bar() +
+#   theme_minimal() +
+#   labs(title = "Figure 1: Distribution of Car Evaluations", x = "Class", y = "Count")
+# ggsave(paste0(opt$output_path, "fig_target_dist.png"))
+
+generate_barplot(data, "class", "Class")
 ggsave(paste0(opt$output_path, "fig_target_dist.png"))
+
 
 # Visualizing relationships
 features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
@@ -39,7 +44,7 @@ plot_list <- lapply(features, function(feature) {
     geom_bar(position = "dodge") +
     theme_minimal() +
     labs(title = paste("Figure 2 - 7:", feature, "vs. Evaluation Class"))
-  ggsave(paste0(opt$output_path, "fig_relation_",feature,"_1.png"))
+  ggsave(paste0(opt$output_path, "fig_relation_", feature, "_1.png"))
 })
 
 # Visualizing relationships again??
@@ -48,25 +53,28 @@ plot_list <- lapply(features, function(feature) {
   ggplot(data, aes(x = .data[[feature]], fill = class)) +
     geom_bar(position = "dodge") +
     theme_minimal() +
-    labs(title = paste("Figure 9 - 14:",feature, "vs. Evaluation Class"))
-  ggsave(paste0(opt$output_path, "fig_relation_",feature,"_2.png"))
+    labs(title = paste("Figure 9 - 14:", feature, "vs. Evaluation Class"))
+  ggsave(paste0(opt$output_path, "fig_relation_", feature, "_2.png"))
 })
 
 
-#visualizations with encoded.RDS
+# visualizations with encoded.RDS
 df_balanced <- read_rds(opt$encode_path)
-# Visualizing the distribution of class after SMOTE 
-ggplot(df_balanced, aes(x = class, fill = class)) +
-  geom_bar() +
-  theme_minimal() +
-  labs(title = "Figure 8: Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
+# Visualizing the distribution of class after SMOTE
+# ggplot(df_balanced, aes(x = class, fill = class)) +
+#   geom_bar() +
+#   theme_minimal() +
+#   labs(title = "Figure 8: Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
+# ggsave(paste0(opt$output_path, "fig_smote_dist.png"))
+
+generate_barplot(df_balanced, "class", "Class")
 ggsave(paste0(opt$output_path, "fig_smote_dist.png"))
 
 # Correlation Heatmap
 corr_matrix <- cor(df_balanced |> mutate(across(where(is.factor), as.numeric)))
-p <- ggcorrplot(corr_matrix, type = "lower", lab=TRUE)
-p <- p+ggtitle("Figure 15: Correlation Heatmap")
-ggsave(paste0(opt$output_path, "fig_corr_heatmap.png"), plot=p)
+p <- ggcorrplot(corr_matrix, type = "lower", lab = TRUE)
+p <- p + ggtitle("Figure 15: Correlation Heatmap")
+ggsave(paste0(opt$output_path, "fig_corr_heatmap.png"), plot = p)
 
 
 # visualization with model
