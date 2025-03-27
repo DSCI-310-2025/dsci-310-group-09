@@ -1,7 +1,7 @@
 library(ggplot2)
 
 # Function to create a bar plot for the class distribution
-make_barplot <- function(dataset, x, x_name) {
+generate_barplot <- function(dataset, x, x_name) {
     # Check if dataset is a data frame
     if (is.null(dataset) || !is.data.frame(dataset)) {
         stop("Dataset must be a data frame!")
