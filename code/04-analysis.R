@@ -1,10 +1,4 @@
-library(randomForest)  
-library(docopt)
-library(readr)
-library(tibble)
-library(caret) 
-
-
+source("R/analysis_model.R")
 "This script reads cleaned.RDS object and applies random forest.
 
 Usage: 04-analysis.R --file_path=<file_path> --output_path=<output_path>
@@ -16,20 +10,5 @@ Usage: 04-analysis.R --file_path=<file_path> --output_path=<output_path>
 # Rscript code/04-analysis.R  --file_path=output/encoded.RDS --output_path=output/matrix.RDS 
 
 opt <- docopt(doc)
-
-df_balanced <- read_rds(opt$file_path)
-
-
-#Applying Random Forest after encoding and balancing the dataset
-n <- nrow(df_balanced)
-trainidx <- sample.int(n, floor(n * .75))
-testidx <- setdiff(1:n, trainidx)
-train <- df_balanced[trainidx, ]
-test <- df_balanced[testidx, ]
-rf <- randomForest(class ~ ., data = train)
-bag <- randomForest(class ~ ., data = train, mtry = ncol(train) - 1)
-preds <-  tibble(truth = test$class, rf = predict(rf, test), bag = predict(bag, test))
-
-predictions <- predict(rf, test)
-conf_matrix <- confusionMatrix(predictions, test$class)
+conf_matrix <- apply_random_forest(opt$file_path)
 write_rds(conf_matrix, opt$output_path)
