@@ -40,22 +40,31 @@ ggsave(paste0(opt$output_path, "fig_target_dist.png"))
 
 # Visualizing relationships
 features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
-plot_list <- lapply(features, function(feature) {
-  ggplot(data, aes(x = .data[[feature]], fill = class)) +
-    geom_bar(position = "dodge") +
-    theme_minimal() +
-    labs(title = paste("Figure 2 - 7:", feature, "vs. Evaluation Class"))
-  ggsave(paste0(opt$output_path, "fig_relation_", feature, "_1.png"))
-})
 
-# Visualizing relationships again??
-features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
-plot_list <- lapply(features, function(feature) {
-  ggplot(data, aes(x = .data[[feature]], fill = class)) +
-    geom_bar(position = "dodge") +
-    theme_minimal() +
-    labs(title = paste("Figure 9 - 14:", feature, "vs. Evaluation Class"))
-  ggsave(paste0(opt$output_path, "fig_relation_", feature, "_2.png"))
+# plot_list <- lapply(features, function(feature) {
+#   ggplot(data, aes(x = .data[[feature]], fill = class)) +
+#     geom_bar(position = "dodge") +
+#     theme_minimal() +
+#     labs(title = paste("Figure 2 - 7:", feature, "vs. Evaluation Class"))
+#   ggsave(paste0(opt$output_path, "fig_relation_", feature, "_1.png"))
+# })
+
+# # Visualizing relationships again??
+# features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
+# plot_list <- lapply(features, function(feature) {
+#   ggplot(data, aes(x = .data[[feature]], fill = class)) +
+#     geom_bar(position = "dodge") +
+#     theme_minimal() +
+#     labs(title = paste("Figure 9 - 14:", feature, "vs. Evaluation Class"))
+#   ggsave(paste0(opt$output_path, "fig_relation_", feature, "_2.png"))
+# })
+
+# Generate the plots using the generate_feature_barplots function
+plot_list <- generate_feature_barplots(data, features)
+
+# Save each plot using ggsave outside the function
+lapply(seq_along(plot_list), function(i) {
+  ggsave(paste0(opt$output_path, "fig_relation_", features[i] ".png"), plot = plot_list[[i]])
 })
 
 
