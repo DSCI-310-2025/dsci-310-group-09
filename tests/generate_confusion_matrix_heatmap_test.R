@@ -31,6 +31,7 @@ test_that("generate_confusion_matrix_heatmap returns correct heatmap", {
     expect_equal(test_plot$labels$y, "Actual Class")
     expect_equal(test_plot$labels$title, "Test Confusion Matrix Heatmap")
     expect_equal(length(test_plot$layers), 2)
+    expect_true(inherits(test_plot$theme, "theme"))
 })
 
 
@@ -46,3 +47,27 @@ test_that("generate_confusion_matrix_heatmap throws error if required columns ar
   missing_df <- data.frame(Pred = c("A", "B"), Ref = c("A", "B"))
   expect_error(generate_confusion_matrix_heatmap(missing_df, title = "Test Confusion Matrix Heatmap"),"Missing required columns")
 })
+
+
+# Test function works if df contain factors
+test_that("dataset contains factors", {
+  factor_df <- data.frame(
+    Prediction = factor(c("A", "A", "B")),
+    Reference = factor(c("A", "B", "B")),
+    Freq = c(10, 15, 20)
+  )
+  test_plot <- generate_confusion_matrix_heatmap(factor_df, title = "Test Confusion Matrix Heatmap")
+  expect_s3_class(test_plot, "ggplot")
+})
+
+
+# Test if 
+test_that("dataset contains missing values", {
+  na_df <- data.frame(
+    Prediction = c("A", "B", NA),
+    Reference = c("A", "B", "A"),
+    Freq = c(10, NA, 5)
+  )
+  expect_error(generate_confusion_matrix_heatmap(na_df), "conf_df not allow missing values!")
+})
+

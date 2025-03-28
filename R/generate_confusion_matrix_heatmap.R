@@ -7,6 +7,11 @@ generate_confusion_matrix_heatmap <- function(conf_df, title = "Confusion Matrix
     stop("conf_df must be a data frame!")
   }
   
+  # Check if there are missing values
+  if (any(is.na(conf_df))) {
+    stop("conf_df not allow missing values!")
+  }
+
   # Check if conf_df contains all columns
   cols <- c("Prediction", "Reference", "Freq")
   missing_cols <- setdiff(cols, names(conf_df))
