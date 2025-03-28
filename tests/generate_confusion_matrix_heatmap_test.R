@@ -61,7 +61,7 @@ test_that("dataset contains factors", {
 })
 
 
-# Test if 
+# Test missing value
 test_that("dataset contains missing values", {
   na_df <- data.frame(
     Prediction = c("A", "B", NA),
