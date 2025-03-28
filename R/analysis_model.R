@@ -8,16 +8,20 @@ library(caret)
 #' 
 
 # Define the function
-apply_random_forest <- function(file_path) {
-  # Read the RDS file
-  df_balanced <- read_rds(file_path)
+apply_random_forest <- function(df) {
+  #set seed for reproducibility
+  set.seed(310)
+
+  if (!is.data.frame(df)) {
+    stop("Input data must be a dataframe or tibble.")
+  }
   
   # Split data into training and testing sets
-  n <- nrow(df_balanced)
+  n <- nrow(df)
   trainidx <- sample.int(n, floor(n * 0.75))
   testidx <- setdiff(1:n, trainidx)
-  train <- df_balanced[trainidx, ]
-  test <- df_balanced[testidx, ]
+  train <- df[trainidx, ]
+  test <- df[testidx, ]
   
   # Apply Random Forest and Bagging
   rf <- randomForest(class ~ ., data = train)
