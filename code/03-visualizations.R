@@ -6,6 +6,7 @@ library(dplyr)
 library(ggplot2)
 library(ggcorrplot)
 source("R/generate_barplot.R")
+source("R/generate_confusion_matrix_heatmap.R")
 
 
 "This script reads processed data and create visualizations
@@ -78,15 +79,16 @@ ggsave(paste0(opt$output_path, "fig_corr_heatmap.png"), plot = p)
 
 
 # visualization with model
-
 conf_matrix <- read_rds(opt$matrix_path)
 # Convert confusion matrix to data frame
 conf_df <- data.frame(conf_matrix$table)
+
 # Plot Confusion Matrix as Heatmap
-ggplot(conf_df, aes(x = Prediction, y = Reference, fill = Freq)) +
-  geom_tile() +
-  geom_text(aes(label = Freq), color = "black", size = 5) +
-  scale_fill_gradient(low = "white", high = "lightblue") +
-  labs(title = "Figure 16: Confusion Matrix Heatmap", x = "Predicted Class", y = "Actual Class") +
-  theme_minimal()
-ggsave(paste0(opt$output_path, "fig_conf_matrix.png"))
+# ggplot(conf_df, aes(x = Prediction, y = Reference, fill = Freq)) +
+#   geom_tile() +
+#   geom_text(aes(label = Freq), color = "black", size = 5) +
+#   scale_fill_gradient(low = "white", high = "lightblue") +
+#   labs(title = "Figure 16: Confusion Matrix Heatmap", x = "Predicted Class", y = "Actual Class") +
+#   theme_minimal()
+conf_matrix_plot <- generate_confusion_matrix_heatmap(conf_df,title = "Confusion Matrix Heatmap")
+ggsave(paste0(opt$output_path, "fig_conf_matrix.png"), plot = conf_matrix_plot)
