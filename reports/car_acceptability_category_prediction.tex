@@ -1,0 +1,887 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Car Acceptability Category Prediction Analysis},
+  pdfauthor={Jiaming Change, Yicheng Huang, Effie Wang, \& Brianna Zhou},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Car Acceptability Category Prediction Analysis}
+\author{Jiaming Change, Yicheng Huang, Effie Wang, \& Brianna Zhou}
+\date{}
+
+\begin{document}
+\maketitle
+
+\renewcommand*\contentsname{Table of contents}
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+
+\subsection{Summary}\label{summary}
+
+We aim to develop a Random Forest classification model to predict car
+acceptability categories: unacceptable (unacc), acceptable (acc), good
+(good), and very good (vgood). This prediction is based on categorical
+attributes such as price, maintenance cost, safety, and seating
+capacity. The data is sourced from the Car Evaluation dataset found in
+the UCI Machine Learning Repository (Bohanec 1988).
+
+Our initial data exploration revealed a significant class imbalance,
+with ``unacceptable'' cars dominating the dataset. To improve
+classification performance, we applied ordinal encoding to categorical
+features and utilized SMOTE (Synthetic Minority Over-sampling Technique)
+to balance the dataset.
+
+Our Random Forest model achieved an impressive overall accuracy of 99\%
+and a strong Kappa statistic of 0.99, indicating robust predictive
+performance and a strong agreement between the predicted and actual
+classes. Overall, the model provides a highly accurate and interpretable
+approach to classifying car acceptability, though further refinements
+could enhance fairness across all categories.
+
+In summary, this analysis demonstrates how machine learning can be
+effectively applied to real-world decision-making in the automotive
+sector.
+
+\subsection{Introduction}\label{introduction}
+
+Evaluating car acceptability is a critical factor in decision-making
+within the automotive industry. It affects consumer choices regarding
+vehicle purchases, manufacturers' priorities, and dealership strategies.
+Car purchases represent one of the most significant financial decisions
+for households, with affordability being the primary barrier for many
+buyers. Price plays a crucial role in accessibility, particularly for
+budget-conscious consumers, such as first-time buyers or individuals in
+emerging markets.
+
+According to Chiu, Du, and Wang (2022), price dispersion positively
+impacts car acceptability. Because car purchases are high-cost,
+long-term investments, misaligned choices due to information
+asymmetry---such as undervaluing safety features---can lead to serious
+financial or safety repercussions (Financial Consumer Agency of Canada
+2024). For instance, vehicles with poor safety ratings have been linked
+to higher accident rates. Consequently, Vrkljan and Anaby (2011)
+concluded that safety is considered the most important feature when
+purchasing a vehicle. Automating car evaluations helps buyers
+efficiently identify optimal vehicles, aligning with the trend toward
+data-driven consumer tools. Recognizing critical features, such as
+safety and price, reflects the industry's priorities in vehicle design.
+
+This project aims to develop a classification model to predict car
+acceptability based on various features such as price, maintenance cost,
+safety, and seating capacity. This analysis uses the
+\href{https://archive.ics.uci.edu/dataset/19/car+evaluation}{Car
+Evaluation dataset}, which contains 1,728 instances and six features:
+buying price, maintenance cost, number of doors, seating capacity,
+luggage size, and safety rating. With an increasing number of car models
+available in the market, understanding how different attributes affect
+car classification can help streamline the evaluation process. The goal
+is to predict car acceptability categories: unacceptable (unacc),
+acceptable (acc), good (good), and very good (vgood). Being able to
+predict car acceptability can enhance automated recommendations, improve
+quality control, and support consumer purchasing decisions.
+
+\subsection{Method \& Results}\label{method-results}
+
+\subsubsection{Importing Data \& Data
+Exploration}\label{importing-data-data-exploration}
+
+Reads the dataset, assigns appropriate and meaningful column names,
+checks the number of rows, and convert all categorical variables into
+factors. The dataset consists of 1,728 rows with 6 categorical features
+related to car evaluation.
+
+\begin{longtable}[]{@{}lllllll@{}}
+
+\caption{\label{tbl-cleaned_data}Cleaned Data}
+
+\tabularnewline
+
+\toprule\noalign{}
+buying & maint & doors & persons & lug\_boot & safety & class \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+vhigh & vhigh & 2 & 2 & small & low & unacc \\
+vhigh & vhigh & 2 & 2 & small & med & unacc \\
+vhigh & vhigh & 2 & 2 & small & high & unacc \\
+vhigh & vhigh & 2 & 2 & med & low & unacc \\
+vhigh & vhigh & 2 & 2 & med & med & unacc \\
+
+\end{longtable}
+
+\subsubsection{Summary and Missing Data
+Check}\label{summary-and-missing-data-check}
+
+Provides a summary of each feature, including frequency distributions
+and potential missing values. It also checks for class imbalance in the
+target variable~\texttt{class}. There is no missing value in attributes.
+
+\begin{verbatim}
+   buying      maint       doors     persons     lug_boot    safety   
+ high :432   high :432   2    :432   2   :576   big  :576   high:576  
+ low  :432   low  :432   3    :432   4   :576   med  :576   low :576  
+ med  :432   med  :432   4    :432   more:576   small:576   med :576  
+ vhigh:432   vhigh:432   5more:432                                    
+   class     
+ acc  : 384  
+ good :  69  
+ unacc:1210  
+ vgood:  65  
+\end{verbatim}
+
+\subsubsection{Class Distribution
+Visualization}\label{class-distribution-visualization}
+
+Generates a bar chart showing how the car evaluations are distributed
+across different categories. This helps identify class imbalances.
+
+\begin{longtable}[]{@{}lr@{}}
+
+\caption{\label{tbl-frequency_distri_car}Frequency distribution of the
+Car Acceptability Category.}
+
+\tabularnewline
+
+\toprule\noalign{}
+class & Frequency \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+acc & 384 \\
+good & 69 \\
+unacc & 1210 \\
+vgood & 65 \\
+
+\end{longtable}
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_target_dist.png}
+
+}
+
+\caption{\label{fig-car_distribution_plot}Distribution of Car
+Evaluations}
+
+\end{figure}%
+
+The dataset shows significant class imbalance as shown in
+Table~\ref{tbl-frequency_distri_car} and
+Figure~\ref{fig-car_distribution_plot}, with the \texttt{unacc}
+(unacceptable) class dominating at 71\% of the original data (1,210 out
+of 1,728 instances). This imbalance may skew model predictions, leading
+to poor performance on the minority classes (\texttt{good},
+\texttt{vgood}).
+
+\subsubsection{Feature Relationships
+Visualization}\label{feature-relationships-visualization}
+
+Creates bar charts for each feature to analyze its relationship with the
+target variable~\texttt{class}. This helps identify important factors
+influencing car evaluations.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_safety_1.png}
+
+}
+
+\caption{\label{fig-car_safety_plot}Safety vs.~Evaluation Class}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_buying_1.png}
+
+}
+
+\caption{\label{fig-car_buying_plot}Buying vs.~Evaluation Class}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_persons_1.png}
+
+}
+
+\caption{\label{fig-car_persons_plot}Number of Passenger vs.~Evaluation
+Class}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_maint_1.png}
+
+}
+
+\caption{\label{fig-car_maintenance_plot}Maintenance vs.~Evaluation
+Class}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_lug_boot_1.png}
+
+}
+
+\caption{\label{fig-car_luggage_plot}Luggage Boot Size vs.~Evaluation
+Class}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_doors_1.png}
+
+}
+
+\caption{\label{fig-car_doors_plot}Number of Doors vs.~Evaluation Class}
+
+\end{figure}%
+
+The analysis of various features---such as safety
+Figure~\ref{fig-car_safety_plot}, buying price
+Figure~\ref{fig-car_buying_plot}, passenger capacity
+Figure~\ref{fig-car_persons_plot}, maintenance cost
+Figure~\ref{fig-car_maintenance_plot}, luggage boot size
+Figure~\ref{fig-car_luggage_plot}, and number of doors---shows
+Figure~\ref{fig-car_doors_plot} that the dominant classification is
+\texttt{unacc} (unacceptable), which indicates a pattern of negative
+evaluations.
+
+There is a strong correlation between high safety ratings and the
+classifications \texttt{vgood} (very good) and ``good''. In contrast,
+vehicles that have low to medium safety ratings, along with high buying
+and maintenance costs, are often classified as \texttt{unacc}.
+
+Affordable cars, particularly those with low to medium prices, and
+vehicles with larger luggage boot sizes tend to have higher proportions
+of \texttt{acc} (acceptable) or \texttt{vgood} ratings. Conversely, cars
+with larger passenger capacities or smaller boots are frequently labeled
+as \texttt{unacc}.
+
+The number of doors appears to have a minimal impact on the evaluations,
+as \texttt{unacc} remains the most common classification regardless of
+this feature.
+
+\subsubsection{Feature Engineering and Data
+Resampling}\label{feature-engineering-and-data-resampling}
+
+Encodes categorical variables into numeric values based on an ordinal
+scale to make them suitable for Random Forest classification model as
+shown in Table~\ref{tbl-encoded_variable}.
+
+\begin{longtable}[]{@{}rrrrrrl@{}}
+
+\caption{\label{tbl-encoded_variable}Ordinal Encoding of Categorical
+Variables.}
+
+\tabularnewline
+
+\toprule\noalign{}
+buying & maint & doors & persons & lug\_boot & safety & class \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+4 & 4 & 2 & 2 & 3 & 2 & 3 \\
+4 & 4 & 2 & 2 & 3 & 3 & 3 \\
+4 & 4 & 2 & 2 & 3 & 1 & 3 \\
+4 & 4 & 2 & 2 & 2 & 2 & 3 \\
+4 & 4 & 2 & 2 & 2 & 3 & 3 \\
+
+\end{longtable}
+
+\subsubsection{Handling Class Imbalance Using
+SMOTE}\label{handling-class-imbalance-using-smote}
+
+There is a great imbalance across different classes, introducing SMOTE
+(Synthetic Minority Over-sampling Technique) to generate synthetic
+samples in order, balance the dataset, reducing bias in classification,
+which improves the distribution.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_smote_dist.png}
+
+}
+
+\caption{\label{fig-car_distri_after_enginerring_plot}Distribution of
+Car Evaluations After Feature Engineering}
+
+\end{figure}%
+
+Visualizes the new class distribution after SMOTE to ensure the dataset
+is balanced for better model performance. In contrast to the original
+imbalanced dataset, where \texttt{unacc} dominated with 1,210 instances,
+all classes (\texttt{unacc}, \texttt{acc}, \texttt{good},
+\texttt{vgood}) now have approximately equal counts of around 1,250 each
+as shown in Figure~\ref{fig-car_distri_after_enginerring_plot}. This
+reflects the effectiveness of synthetic oversampling (SMOTE) in
+addressing the severe class imbalance.
+
+\subsubsection{Visualizing relationships with Class
+Balanced}\label{visualizing-relationships-with-class-balanced}
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_safety_2.png}
+
+}
+
+\caption{\label{fig-car_safety_balance_plot}Safety vs.~Evaluation Class
+with Class Balance}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_buying_2.png}
+
+}
+
+\caption{\label{fig-car_buying_balance_plot}Buying vs.~Evaluation Class
+with Class Balance}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_persons_2.png}
+
+}
+
+\caption{\label{fig-car_persons_balance_plot}Number of Passenger
+vs.~Evaluation Class with Class Balance}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_maint_2.png}
+
+}
+
+\caption{\label{fig-car_maintenance_balance_plot}Maintenance
+vs.~Evaluation Class with Class Balance}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_lug_boot_2.png}
+
+}
+
+\caption{\label{fig-car_luggage_balance_plot}Luggage Boot Size
+vs.~Evaluation Class with Class Balance}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_relation_doors_2.png}
+
+}
+
+\caption{\label{fig-car_doors_balance_plot}Number of Doors
+vs.~Evaluation Class with Class Balance}
+
+\end{figure}%
+
+The ``safety vs.~Evaluation Class'' plot
+Figure~\ref{fig-car_safety_balance_plot} shows that cars with high
+safety ratings mostly receive \texttt{vgood}/\texttt{good} evaluations,
+while \texttt{low}/\texttt{med} safety cars are often labeled
+\texttt{unacc}. In ``buying vs.~Evaluation Class''
+Figure~\ref{fig-car_buying_balance_plot}, higher prices (\texttt{high},
+\texttt{vhigh}) correlate with \texttt{unacc}, while affordable cars
+(\texttt{low}, \texttt{med}) are more likely to be
+\texttt{acc}/\texttt{vgood}. The ``Number of Passenger vs.~Evaluation
+Class'' Figure~\ref{fig-car_persons_balance_plot}. indicates that cars
+with more passenger capacity tend to be \texttt{unacc}due to
+impracticality. For ``maint vs.~Evaluation Class''
+Figure~\ref{fig-car_maintenance_balance_plot}, high maintenance costs
+link to \texttt{unacc}, while lower costs improve acceptability. Lastly,
+door count has a minimal impact as shown in
+Figure~\ref{fig-car_doors_balance_plot}, with \texttt{unacc} prevailing
+across categories, though cars with 5+ doors show slightly higher
+\texttt{acc}/\texttt{vgood}. Overall, \texttt{unacc} is associated with
+high-cost, low-safety, or impractical configurations, while
+\texttt{vgood}/\texttt{good} relate to affordability, safety, and
+utility.
+
+\subsubsection{Correlation Heatmap}\label{correlation-heatmap}
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_corr_heatmap.png}
+
+}
+
+\caption{\label{fig-corr_heatmap}Correlation Heatmap}
+
+\end{figure}%
+
+Generates a correlation heatmap to examine relationships between
+features. Helps identify redundant or highly correlated features. This
+visualization Figure~\ref{fig-corr_heatmap} illustrates the correlation
+and feature importance of various factors that influence car evaluation
+outcomes. The values range from -1, indicating a strong negative
+association, to +1, which indicates a strong positive association.
+
+The strongest predictors are safety ratings and buying prices. Higher
+safety ratings are strongly associated with more favorable evaluations
+(such as ``very good'' or ``good''), while cars with high or very high
+buying prices tend to receive negative outcomes (such as
+``unacceptable'').
+
+Maintenance costs and the number of doors have a moderate influence,
+with lower maintenance costs enhancing acceptability. In contrast,
+features like luggage boot size and passenger capacity show minimal
+impact on car evaluations.
+
+\subsubsection{Classification Model}\label{classification-model}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Splits the balanced dataset into 75\% training and 25\% testing sets
+  for model training and evaluation.
+\item
+  Trains two models:
+\end{enumerate}
+
+\begin{itemize}
+\item
+  \texttt{Random\ Forest\ (rf)}: Uses multiple decision trees with
+  feature selection.
+\item
+  \texttt{Bagging\ (bag)}: Uses all features to grow trees, reducing
+  variance.
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Predicts class labels for the test set and computes a confusion matrix
+  to evaluate accuracy, sensitivity, and specificity of the model.
+\end{enumerate}
+
+\begin{longtable}[]{@{}lr@{}}
+
+\caption{\label{tbl-overall_confusion_matrix}Confusion Matrix of Random
+Forest Model}
+
+\tabularnewline
+
+\toprule\noalign{}
+& x \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Accuracy & 0.9834711 \\
+Kappa & 0.9779462 \\
+AccuracyLower & 0.9745874 \\
+AccuracyUpper & 0.9898752 \\
+AccuracyNull & 0.2611570 \\
+AccuracyPValue & 0.0000000 \\
+McnemarPValue & NaN \\
+
+\end{longtable}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0570}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0759}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0759}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0949}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0949}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0633}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0633}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0633}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0696}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.0949}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.1329}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 22\tabcolsep) * \real{0.1139}}@{}}
+
+\caption{\label{tbl-overall_confusion_matrix}Confusion Matrix of Random
+Forest Model}
+
+\tabularnewline
+
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Sensitivity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Specificity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Pos Pred Value
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Neg Pred Value
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Precision
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Recall
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+F1
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Prevalence
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Detection Rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Detection Prevalence
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Balanced Accuracy
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Class: 1 & 0.9838710 & 0.9844444 & 0.9561129 & 0.9943883 & 0.9561129 &
+0.9838710 & 0.9697933 & 0.2561983 & 0.2520661 & 0.2636364 & 0.9841577 \\
+Class: 2 & 1.0000000 & 0.9945295 & 0.9833887 & 1.0000000 & 0.9833887 &
+1.0000000 & 0.9916248 & 0.2446281 & 0.2446281 & 0.2487603 & 0.9972648 \\
+Class: 3 & 0.9479167 & 1.0000000 & 1.0000000 & 0.9839915 & 1.0000000 &
+0.9479167 & 0.9732620 & 0.2380165 & 0.2256198 & 0.2256198 & 0.9739583 \\
+Class: 4 & 1.0000000 & 0.9988814 & 0.9968454 & 1.0000000 & 0.9968454 &
+1.0000000 & 0.9984202 & 0.2611570 & 0.2611570 & 0.2619835 & 0.9994407 \\
+
+\end{longtable}
+
+The confusion matrix summarizes the performance of the Random Forest
+model by showing the number of correct and incorrect predictions across
+different classes. It provides insights into how well the model
+distinguishes between categories by comparing actual vs.~predicted
+values as shown in Table~\ref{tbl-overall_confusion_matrix}. In
+addition, it provides per-class evaluation metrics, giving detailed
+insights into how well the model performs for each individual class.
+
+The model achieved an overall accuracy approximately of 0.983, correctly
+classifying cars in most cases. The approximate Kappa score 0.978
+indicates a strong agreement between predictions and actual labels,
+while the high sensitivity and specificity values demonstrate excellent
+detection ability across all classes.
+
+\subsubsection{Result Visualization}\label{result-visualization}
+
+We visualize the confusion matrix to get a better idea of the accuracy
+of the model.
+
+\begin{longtable}[]{@{}rrrr@{}}
+
+\caption{\label{tbl-confusion_matrix_table}Confusion Matrix of Random
+Forest Model}
+
+\tabularnewline
+
+\toprule\noalign{}
+1 & 2 & 3 & 4 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+305 & 0 & 14 & 0 \\
+4 & 296 & 1 & 0 \\
+0 & 0 & 273 & 0 \\
+1 & 0 & 0 & 316 \\
+
+\end{longtable}
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{../output/fig_conf_matrix.png}
+
+}
+
+\caption{\label{fig-confusion_maxtrix__heatmap}Confusion Matrix Heatmap}
+
+\end{figure}%
+
+In Figure~\ref{fig-confusion_maxtrix__heatmap} and
+Table~\ref{tbl-confusion_matrix_table}, the diagonal elements represent
+correct classifications, which means the model accurately predicted
+those classes of car. The off-diagonal elements represent incorrect
+classifications, which shows errors in the model made. Most of the
+predictions fall on the diagonal line, suggesting that the model
+performs very well in predicting the dataset. There are few cases of
+misclassification, which means that the accuracy rate is high.
+
+\subsection{Discussion}\label{discussion}
+
+Our random forest model achieves approximate accuracy of 98.3\% and a
+strong Kappa statistic about 0.978, which shows it effectively predicts
+car acceptability base on the six measurements.
+
+The results we got were very much in line with our expectations as our
+model performed very well. Our model correctly classifies almost all
+cars into the correct acceptable categories.
+
+The results we get are very important for decision-making in the
+automotive industry. Consumers can choose to purchase vehicles based on
+demand, manufacturers can prioritize the demand for vehicle production,
+and dealers can develop strategies that are more in line with the
+market.
+
+Our model is very good, but we still have some interesting questions for
+the future. Will additional features, such as brand, have an impact on
+the prediction? Is there any other model that is faster with no loss of
+accuracy? How is it possible to make our model more realistic? In
+conclusion, in the future, we may refine the data, compare more models,
+or try to apply our models to real-world problems.
+
+\subsection*{References}\label{references}
+\addcontentsline{toc}{subsection}{References}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-Bohanec1988}
+Bohanec, Marko. 1988. {``Car Evaluation {[}Dataset{]}.''} \emph{UCI
+Machine Learning Repository}. \url{https://doi.org/10.24432/C5JP48}.
+
+\bibitem[\citeproctext]{ref-Chiu2022}
+Chiu, L., J. Du, and N. Wang. 2022. {``The Effects of Price Dispersion
+on Sales in the Automobile Industry: A Dynamic Panel Analysis.''}
+\emph{SAGE Open}. \url{https://doi.org/10.1177/21582440221120647}.
+
+\bibitem[\citeproctext]{ref-Canada2024}
+Financial Consumer Agency of Canada. 2024. {``Government of Canada.''}
+\url{https://www.canada.ca/en/financial-consumer-agency/services/loans/financing-car/risks.html}.
+
+\bibitem[\citeproctext]{ref-Vrkljan2011}
+Vrkljan, Brenda H., and Dana Anaby. 2011. {``What Vehicle Features Are
+Considered Important When Buying an Automobile? An Examination of Driver
+Preferences by Age and Gender.''} \emph{Journal of Safety Research} 42
+(1): 61--65. \url{https://doi.org/10.1016/j.jsr.2010.11.006}.
+
+\end{CSLReferences}
+
+
+
+
+\end{document}
