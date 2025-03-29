@@ -22,6 +22,11 @@ generate_feature_barplots <- function(data, features) {
   if (!"class" %in% names(data)) {
     stop("The dataset must contain a 'class' column!")
   }
+
+  # Check if dataset is empty
+  if (nrow(data) == 0) {
+    stop("The dataset is empty!")
+  }
   
    # Generate bar plots for each feature
   plot_list <- lapply(features, function(feature) {

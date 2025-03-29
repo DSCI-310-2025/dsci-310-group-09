@@ -1,7 +1,9 @@
 library(testthat)
 library(ggplot2)
-
-source("R/generate_feature_barplots.R")
+print(getwd())
+setwd("../R")
+print(getwd())
+source("generate_feature_plots.R")
 
 # Create a test dataset
 test_data <- data.frame(
@@ -75,8 +77,9 @@ test_that("Missing class column throws error", {
 # Edge case: Empty dataset
 test_that("Empty dataset throws error", {
   empty_data <- data.frame(class = factor(), feature1 = character(), feature2 = character())
-  expect_error(generate_feature_barplots(empty_data, c("feature1", "feature2")), "Missing required columns: feature1, feature2")
+  expect_error(generate_feature_barplots(empty_data, c("feature1", "feature2")), "The dataset is empty!")
 })
+
 
 # Edge case: Features not present in the dataset
 test_that("Features not present in the dataset throws error", {
