@@ -1,7 +1,7 @@
 library(testthat)
 library(ggplot2)
 
-source("generate_feature_barplots.R")
+source("R/generate_feature_barplots.R")
 
 # Create a test dataset
 test_data <- data.frame(

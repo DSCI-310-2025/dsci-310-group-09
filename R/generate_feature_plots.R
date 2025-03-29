@@ -25,7 +25,7 @@ generate_feature_barplots <- function(data, features) {
   
    # Generate bar plots for each feature
   plot_list <- lapply(features, function(feature) {
-    ggplot(dataset, aes(x = .data[[feature]], fill = class)) +
+    ggplot(data, aes(x = .data[[feature]], fill = class)) +
       geom_bar(position = "dodge") +
       theme_minimal() +
       labs(title = paste("Feature Analysis:", feature, "vs. Evaluation Class"),
