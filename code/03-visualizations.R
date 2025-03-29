@@ -28,12 +28,6 @@ data <- read_rds(opt$data_path)
 write_rds(table(data$class), paste0(opt$output_path, "tbl_target_dist.RDS"))
 
 # Visualizing the distribution of class
-# ggplot(data, aes(x = class, fill = class)) +
-#   geom_bar() +
-#   theme_minimal() +
-#   labs(title = "Figure 1: Distribution of Car Evaluations", x = "Class", y = "Count")
-# ggsave(paste0(opt$output_path, "fig_target_dist.png"))
-
 generate_barplot(data, "class", "Class")
 ggsave(paste0(opt$output_path, "fig_target_dist.png"))
 
@@ -62,12 +56,6 @@ plot_list <- lapply(features, function(feature) {
 # visualizations with encoded.RDS
 df_balanced <- read_rds(opt$encode_path)
 # Visualizing the distribution of class after SMOTE
-# ggplot(df_balanced, aes(x = class, fill = class)) +
-#   geom_bar() +
-#   theme_minimal() +
-#   labs(title = "Figure 8: Distribution of Car Evaluations After Feature Engineering", x = "Class", y = "Count")
-# ggsave(paste0(opt$output_path, "fig_smote_dist.png"))
-
 generate_barplot(df_balanced, "class", "Class")
 ggsave(paste0(opt$output_path, "fig_smote_dist.png"))
 
@@ -84,11 +72,5 @@ conf_matrix <- read_rds(opt$matrix_path)
 conf_df <- data.frame(conf_matrix$table)
 
 # Plot Confusion Matrix as Heatmap
-# ggplot(conf_df, aes(x = Prediction, y = Reference, fill = Freq)) +
-#   geom_tile() +
-#   geom_text(aes(label = Freq), color = "black", size = 5) +
-#   scale_fill_gradient(low = "white", high = "lightblue") +
-#   labs(title = "Figure 16: Confusion Matrix Heatmap", x = "Predicted Class", y = "Actual Class") +
-#   theme_minimal()
-conf_matrix_plot <- generate_confusion_matrix_heatmap(conf_df,title = "Confusion Matrix Heatmap")
+conf_matrix_plot <- generate_confusion_matrix_heatmap(conf_df, title = "Confusion Matrix Heatmap")
 ggsave(paste0(opt$output_path, "fig_conf_matrix.png"), plot = conf_matrix_plot)
