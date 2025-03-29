@@ -1,9 +1,6 @@
 library(testthat)
 library(ggplot2)
-print(getwd())
-setwd("../R")
-print(getwd())
-source("generate_feature_plots.R")
+source("R/generate_feature_plots.R")
 
 # Create a test dataset
 test_data <- data.frame(
