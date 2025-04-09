@@ -6,6 +6,23 @@ library(caret)
 
 #' Function that applies RandomForest algorithm to the dataset, returns the confusion matrix
 #' 
+#' @param df a dataframe
+#' 
+#' @return a confusin matrix based on the RandomForest model
+#' @export
+#'
+#' @examples
+#' #example 
+#' df_balanced <- tibble(
+#'    class = factor(sample(c("A", "B"), 100, replace = TRUE)),
+#'    var1 = rnorm(100),
+#'    var2 = runif(100)
+#'  )
+#' conf_mat <- apply_random_forest(data_balanced)
+#'
+#' \dontrun{
+#' apply_random_forest(2048)
+#' }
 
 # Define the function
 apply_random_forest <- function(df) {
@@ -34,6 +51,6 @@ apply_random_forest <- function(df) {
   predictions <- predict(rf, test)
   conf_matrix <- confusionMatrix(predictions, test$class)
   
-  #return s confusion matrix
+  #return a confusion matrix
   return(conf_matrix)
 }

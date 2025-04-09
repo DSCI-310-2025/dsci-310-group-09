@@ -4,6 +4,7 @@ library(readr)
 library(dplyr)
 library(themis) # For SMOTE
 library(recipes) # FOR SMOTE
+library(pointblank)
 
 "This script reads car data from the 'data' folder, cleans it, and processes it.
 
@@ -61,3 +62,8 @@ smote_recipe <- recipe(class ~ ., data = df_encoded) %>%
 
 df_balanced <- smote_recipe
 write_rds(df_balanced, opt$encode_path)
+
+# data validation process
+# create an agent
+# agent <- df_encoded|>create_agent()|>
+          
