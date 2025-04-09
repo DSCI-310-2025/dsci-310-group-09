@@ -55,7 +55,12 @@ docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -
 ---------------------
 4. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
 ---------------------------  
-5. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
+5. In the terminal of Rstudio container, run:
+```
+quarto install tinytex
+```
+to install latex for generating report
+6. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
 
 
 
@@ -85,7 +90,12 @@ docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -
 ---------------------
 4. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
 ---------------------------  
-5. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
+5. In the terminal of Rstudio container, run:
+```
+quarto install tinytex
+```
+to install latex for generating report
+6. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
 
 ### Usage of Makefile
 #### Running the Entire Workflow
