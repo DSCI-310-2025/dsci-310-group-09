@@ -16,6 +16,8 @@ generate_barplot <- function(dataset, x, x_name) {
     if (!is.factor(dataset[[x]])) {
         stop(paste("The column", x, "must be a factor column."))
     }
+  
+  if(!interactive()) pdf(NULL)
 
     class_distribution <- ggplot(dataset, aes(x = !!sym(x), fill = !!sym(x))) +
         geom_bar() +

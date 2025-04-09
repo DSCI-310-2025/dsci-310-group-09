@@ -1,6 +1,6 @@
 library(testthat)
 library(ggplot2)
-source("R/generate_feature_plots.R")
+source("../../R/generate_feature_plots.R")
 
 # Create a test dataset
 test_data <- data.frame(
@@ -32,16 +32,16 @@ expected_plot_feature2 <- ggplot(test_data, aes(x = feature2, fill = class)) +
 # Generate plot
 test_that("generate_feature_barplots works correctly", {
   plot_list <- generate_feature_barplots(test_data, c("feature1", "feature2"))
-  
+
   # Check if the return value is a list of ggplot objects
   expect_is(plot_list, "list")
   expect_s3_class(plot_list[[1]], "ggplot")
   expect_s3_class(plot_list[[2]], "ggplot")
-  
+
   # Check if the plots are generated correctly
   expect_equal(plot_list[[1]]$labels$title, "Feature Analysis: feature1 vs. Evaluation Class")
   expect_equal(plot_list[[2]]$labels$title, "Feature Analysis: feature2 vs. Evaluation Class")
-  
+
   # Check if axis labels are correctly set
   expect_equal(plot_list[[1]]$labels$x, "feature1")
   expect_equal(plot_list[[1]]$labels$y, "Count")

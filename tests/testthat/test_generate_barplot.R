@@ -1,7 +1,7 @@
 library(testthat)
 library(ggplot2)
 
-source("R/generate_barplot.R")
+source("../../R/generate_barplot.R")
 
 # Create a test dataset with explicit counts
 test_data <- data.frame(class = factor(rep(c("A", "B", "C"), times = c(5, 3, 2))))
