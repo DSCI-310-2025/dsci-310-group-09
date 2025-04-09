@@ -1,5 +1,5 @@
 # Specify what environment is needed in this container:
-FROM rocker/rstudio:4.4.3
+FROM rocker/rstudio:4.4.2
 
 ## maybe need to install packages in renv, remotes, and tidyverse?? Will add more packages if needed.
 RUN Rscript -e "install.packages(c('renv', 'remotes'), repos = c(CRAN = 'https://cloud.r-project.org'))" && \
@@ -14,4 +14,4 @@ RUN Rscript -e "install.packages(c('renv', 'remotes'), repos = c(CRAN = 'https:/
     Rscript -e "remotes::install_version('ggcorrplot', version = '0.1.4.1', repos = 'https://cloud.r-project.org')"&&\
     Rscript -e "remotes::install_version('testthat', version = '3.2.3', repos = 'https://cloud.r-project.org')"
 
-
+RUN Rscript -e "installed.packages()[,'Package']"
