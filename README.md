@@ -131,8 +131,7 @@ make clean
 
 
 ## Dependencies
-- R and R packages:
-    - tidyverse(optional)
+- R and Essential R Packages:
     - randomForest
     - caret
     - corrplot
@@ -142,10 +141,12 @@ make clean
     - utils
     - readr
     - dplyr
-    - knitr
     - ggplot2
     - ggcorrplot
+    - knitr
     - tibble
+- Optional Meta-Packges
+    - tidyverse (a convenient collection of packages included ggplot2, readr, tibble, etc)
 - Quarto
 - Docker
 - GNU Make (v4.2.1 or later)
