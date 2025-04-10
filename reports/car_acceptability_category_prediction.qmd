@@ -192,7 +192,11 @@ We visualize the confusion matrix to get a better idea of the accuracy of the mo
 #| tbl-cap: Confusion Matrix of Random Forest Model
 
 confusion_matrix <- readRDS("../output/matrix.RDS")
-knitr::kable(confusion_matrix$table)
+conf_table <- confusion_matrix$table
+class_labels <- c("unacc", "acc", "good", "vgood")
+rownames(conf_table) <- class_labels
+colnames(conf_table) <- class_labels
+knitr::kable(conf_table)
 ```
 
 ![Confusion Matrix Heatmap](../output/fig_conf_matrix.png){#fig-confusion_maxtrix__heatmap width="60%"}
