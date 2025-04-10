@@ -192,7 +192,11 @@ We visualize the confusion matrix to get a better idea of the accuracy of the mo
 #| tbl-cap: Confusion Matrix of Random Forest Model
 
 confusion_matrix <- readRDS("../output/matrix.RDS")
-knitr::kable(confusion_matrix$table)
+conf_table <- confusion_matrix$table
+class_labels <- c("unacc", "acc", "good", "vgood")
+rownames(conf_table) <- class_labels
+colnames(conf_table) <- class_labels
+knitr::kable(conf_table)
 ```
 
 ![Confusion Matrix Heatmap](../output/fig_conf_matrix.png){#fig-confusion_maxtrix__heatmap width="60%"}
@@ -201,6 +205,8 @@ In @fig-confusion_maxtrix__heatmap and @tbl-confusion_matrix_table, the diagonal
 
 ## Discussion
 
+### Analysis and Evaluation
+
 Our random forest model achieves approximate accuracy of `{r} accuracy_percentage`% and a strong Kappa statistic about `{r} kappa`, which shows it effectively predicts car acceptability base on the six measurements.
 
 The results we got were very much in line with our expectations as our model performed very well. Our model correctly classifies almost all cars into the correct acceptable categories.
@@ -208,5 +214,14 @@ The results we got were very much in line with our expectations as our model per
 The results we get are very important for decision-making in the automotive industry. Consumers can choose to purchase vehicles based on demand, manufacturers can prioritize the demand for vehicle production, and dealers can develop strategies that are more in line with the market.
 
 Our model is very good, but we still have some interesting questions for the future. Will additional features, such as brand, have an impact on the prediction? Is there any other model that is faster with no loss of accuracy? How is it possible to make our model more realistic? In conclusion, in the future, we may refine the data, compare more models, or try to apply our models to real-world problems.
+
+### Limitations
+
+1. The dataset contains a limited number of categorical features such as price and safety. Other potential influencing factors such as brand reliability, consumer ratings, etc. are not taken into account, which may reduce the prediction accuracy in practical applications.
+
+2. While the Random Forest model performs very well, it lacks interpretability compared to simpler models such as logistic regression or decision trees.
+
+Therefore, these are aspects that we can improve in the future.
+
 
 ## References

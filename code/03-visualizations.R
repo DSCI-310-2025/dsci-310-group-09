@@ -66,6 +66,11 @@ conf_matrix <- read_rds(opt$matrix_path)
 # Convert confusion matrix to data frame
 conf_df <- data.frame(conf_matrix$table)
 
+# Add labels to heatmao
+class_labels <- c("unacc", "acc", "good", "vgood")
+conf_df$Prediction <- factor(conf_df$Prediction, levels = c(1, 2, 3, 4), labels = class_labels)
+conf_df$Reference  <- factor(conf_df$Reference,  levels = c(1, 2, 3, 4), labels = class_labels)
+
 # Plot Confusion Matrix as Heatmap
 conf_matrix_plot <- generate_confusion_matrix_heatmap(conf_df, title = "Confusion Matrix Heatmap")
 ggsave(paste0(opt$output_path, "fig_conf_matrix.png"), plot = conf_matrix_plot)
