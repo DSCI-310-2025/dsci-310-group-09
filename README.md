@@ -165,7 +165,6 @@ make test
 ```
 would do!
 
-
 ## Dependencies
 - R and Essential R Packages:
     - caret
