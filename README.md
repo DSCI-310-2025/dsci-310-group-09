@@ -49,13 +49,13 @@ docker  build --platform=linux/amd64 -t <container_name> .
 -------------------
 4. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
 ```
-docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work <container_name>
+docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio <container_name>
 ```
 The `<container_name>` has to be the same name you made in step 2. 
 
 For Mac users, use:
 ```
-docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work <container_name>
+docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio <container_name>
 ```
 
 ---------------------
@@ -93,12 +93,12 @@ docker pull justintrenchcoat/milestone_1:latest
 -------------------
 4. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
 ```
-docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work justintrenchcoat/milestone_1
+docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio justintrenchcoat/milestone_1
 ```
 
 For Mac users, use:
 ```
-docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work justintrenchcoat/milestone_1
+docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio justintrenchcoat/milestone_1
 ```
 ---------------------
 5. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
@@ -111,22 +111,6 @@ to install latex for generating report
 
 7. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
 
-
-## Usage 
-To ensure that all file paths work correctly:
-
-Run
-```
-cd work
-```
-in the terminal of Rstudio container
-
-**or**
-
-```
-setwd("work")
-```
-in the console of Rstudio container
 
 ### Usage of Makefile
 #### Running the Entire Workflow
