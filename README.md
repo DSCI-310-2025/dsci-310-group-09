@@ -60,6 +60,7 @@ docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -
 quarto install tinytex
 ```
 to install latex for generating report
+
 6. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
 
 
@@ -95,7 +96,25 @@ docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -
 quarto install tinytex
 ```
 to install latex for generating report
+
 6. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
+
+
+## Usage 
+To ensure that all file paths work correctly:
+
+Run
+```
+cd work/dsci-310-group-09
+```
+in the terminal of Rstudio container
+
+**or**
+
+```
+setwd("work/dsci-310-group-09")
+```
+in the console of Rstudio container
 
 ### Usage of Makefile
 #### Running the Entire Workflow
@@ -137,6 +156,12 @@ make reports/car_acceptability_category_prediction.pdf
 To remove all generated files and reset the project, use:
 ```
 make clean
+```
+
+### Usage of Test
+In the terminal of Rstudio container, run:
+```
+Rscript -e 'testthat::test_dir("tests/testthat")'
 ```
 
 
