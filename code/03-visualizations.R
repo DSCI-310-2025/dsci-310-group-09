@@ -36,7 +36,7 @@ ggsave(paste0(opt$output_path, "fig_target_dist.png"))
 # Visualizing relationships
 features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
 
-# Generate the plots using the generate_feature_barplots function
+# Generate the plots for original data using the generate_feature_barplots function
 plot_list <- generate_feature_barplots(data, features)
 
 # Save each plot using ggsave outside the function
@@ -44,7 +44,11 @@ lapply(seq_along(plot_list), function(i) {
   ggsave(paste0(opt$output_path, "fig_relation_", features[i], "_1.png"), plot = plot_list[[i]])
 })
 
-lapply(seq_along(plot_list), function(i) {
+# Generate the plots for balanced data using the generate_feature_barplots function
+balanced_plot_list <- generate_feature_barplots(df_balanced, features)
+
+# Save each plot using ggsave outside the function
+lapply(seq_along(balanced_plot_list), function(i) {
   ggsave(paste0(opt$output_path, "fig_relation_", features[i], "_2.png"), plot = plot_list[[i]])
 })
 
