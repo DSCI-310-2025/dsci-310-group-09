@@ -8,14 +8,15 @@ library(pointblank)
 
 "This script reads car data from the 'data' folder, cleans it, and processes it.
 
-Usage: 02-clean-process.R --file_path=<file_path> --data_path=<data_path> --encode_path=<encode_path>
+Usage: 02-clean-process.R --file_path=<file_path> --data_path=<data_path> --encode_path=<encode_path> --valid_path=<valid_path>
 " -> doc
 # file_path should be data/original/car.data
 # and data_path should be data/cleaned/cleaned.RDS
 # encode_path should be output/encoded.RDS
+# valid_path should be data/cleaned/not_valid.RDS
 
 # enter this in terminal or Makefile:
-# Rscript code/02-clean-process.R --file_path=data/original/car.data --data_path=data/cleaned/cleaned.RDS --encode_path=output/encoded.RDS
+# Rscript code/02-clean-process.R --file_path=data/original/car.data --data_path=data/cleaned/cleaned.RDS --encode_path=output/encoded.RDS --valid_path=data/cleaned/not_valid.RDS
 
 opt <- docopt(doc)
 
@@ -54,6 +55,7 @@ df_encoded <- data %>% mutate(across(names(ordinal_mapping), ~ ordinal_mapping[[
 #There is a great imbalance across different classes, introducing SMOTE to generate synthetic samples in order to improve the distribution
 df_encoded$class <- as.factor(df_encoded$class)  # Ensure class is a factor
 
+write_rds(df_encoded, opt$valid_path)
 # Create a recipe for SMOTE
 smote_recipe <- recipe(class ~ ., data = df_encoded) %>%
   step_smote(class, over_ratio = 1) %>%
@@ -63,7 +65,3 @@ smote_recipe <- recipe(class ~ ., data = df_encoded) %>%
 df_balanced <- smote_recipe
 write_rds(df_balanced, opt$encode_path)
 
-# data validation process
-# create an agent
-# agent <- df_encoded|>create_agent()|>
-          
