@@ -44,6 +44,9 @@ lapply(seq_along(plot_list), function(i) {
   ggsave(paste0(opt$output_path, "fig_relation_", features[i], "_1.png"), plot = plot_list[[i]])
 })
 
+# Visualizations with encoded.RDS
+df_balanced <- read_rds(opt$encode_path)
+
 # Generate the plots for balanced data using the generate_feature_barplots function
 balanced_plot_list <- generate_feature_barplots(df_balanced, features)
 
@@ -52,8 +55,6 @@ lapply(seq_along(balanced_plot_list), function(i) {
   ggsave(paste0(opt$output_path, "fig_relation_", features[i], "_2.png"), plot = balanced_plot_list[[i]])
 })
 
-# Visualizations with encoded.RDS
-df_balanced <- read_rds(opt$encode_path)
 # Visualizing the distribution of class after SMOTE
 generate_barplot(df_balanced, "class", "Class")
 ggsave(paste0(opt$output_path, "fig_smote_dist.png"))
