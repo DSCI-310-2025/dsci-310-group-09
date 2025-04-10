@@ -1,4 +1,4 @@
-.PHONY: all clean report
+.PHONY: all clean report test
 
 all: 
 	make clean
@@ -67,7 +67,12 @@ reports/car_acceptability_category_prediction.html: output reports/car_acceptabi
 
 reports/car_acceptability_category_prediction.pdf: output reports/car_acceptability_category_prediction.qmd
 	quarto render reports/car_acceptability_category_prediction.qmd --to pdf
-
+	
+# test the functions, and yes this is a Mickey Mouse Clubhouse reference
+test:
+	@echo "Running tests on surprise tools that will help us later!"	
+	Rscript -e 'testthat::test_dir("tests/testthat")'
+	@echo "Functions check complete!"
 
 # clean
 clean: 

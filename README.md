@@ -159,23 +159,29 @@ In the terminal of Rstudio container, run:
 ```
 Rscript -e 'testthat::test_dir("tests/testthat")'
 ```
-
+or just:
+```
+make test
+```
+would do!
 
 ## Dependencies
 - R and Essential R Packages:
-    - randomForest
     - caret
     - corrplot
-    - themis
-    - recipes
     - docopt
-    - utils
-    - readr
     - dplyr
-    - ggplot2
     - ggcorrplot
+    - ggplot2
     - knitr
+    - pointblank
+    - randomForest
+    - readr
+    - recipes
+    - testthat
+    - themis
     - tibble
+    - utils
 - Optional Meta-Packges
     - tidyverse (a convenient collection of packages included ggplot2, readr, tibble, etc)
 - Quarto
