@@ -29,7 +29,13 @@ git clone https://github.com/DSCI-310-2025/dsci-310-group-09.git
 to clone down our project repository.
 
 -----------------------------------
-2. make sure you have Docker application activated, and in your terminal, create the docker image by entering:
+2. change the current working directory, use
+```
+cd dsci-310-group-09
+```
+
+-----------------------------------
+3. make sure you have Docker application activated, and in your terminal, create the docker image by entering:
 ```
 docker  build -t <container_name> .
 ```
@@ -41,7 +47,7 @@ docker  build --platform=linux/amd64 -t <container_name> .
 ```
 
 -------------------
-3. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
+4. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
 ```
 docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work <container_name>
 ```
@@ -53,15 +59,15 @@ docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -
 ```
 
 ---------------------
-4. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
+5. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
 ---------------------------  
-5. In the terminal of Rstudio container, run:
+6. In the terminal of Rstudio container, run:
 ```
 quarto install tinytex
 ```
 to install latex for generating report
 
-6. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
+7. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
 
 
 
@@ -74,12 +80,18 @@ git clone https://github.com/DSCI-310-2025/dsci-310-group-09.git
 to clone down our project repository.
 
 ----------------------
-2. make sure you have Docker application activated, and in your terminal, pull the docker image by entering:
+2. change the current working directory, use
+```
+cd dsci-310-group-09
+```
+
+-----------------------------------
+3. make sure you have Docker application activated, and in your terminal, pull the docker image by entering:
 ```
 docker pull justintrenchcoat/milestone_1:latest
 ```
 -------------------
-3. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
+4. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
 ```
 docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work justintrenchcoat/milestone_1
 ```
@@ -89,15 +101,15 @@ For Mac users, use:
 docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work justintrenchcoat/milestone_1
 ```
 ---------------------
-4. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
+5. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
 ---------------------------  
-5. In the terminal of Rstudio container, run:
+6. In the terminal of Rstudio container, run:
 ```
 quarto install tinytex
 ```
 to install latex for generating report
 
-6. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
+7. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
 
 
 ## Usage 
@@ -105,14 +117,14 @@ To ensure that all file paths work correctly:
 
 Run
 ```
-cd work/dsci-310-group-09
+cd work
 ```
 in the terminal of Rstudio container
 
 **or**
 
 ```
-setwd("work/dsci-310-group-09")
+setwd("work")
 ```
 in the console of Rstudio container
 
