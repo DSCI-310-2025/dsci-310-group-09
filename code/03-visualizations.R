@@ -49,10 +49,10 @@ balanced_plot_list <- generate_feature_barplots(df_balanced, features)
 
 # Save each plot using ggsave outside the function
 lapply(seq_along(balanced_plot_list), function(i) {
-  ggsave(paste0(opt$output_path, "fig_relation_", features[i], "_2.png"), plot = plot_list[[i]])
+  ggsave(paste0(opt$output_path, "fig_relation_", features[i], "_2.png"), plot = balanced_plot_list[[i]])
 })
 
-# visualizations with encoded.RDS
+# Visualizations with encoded.RDS
 df_balanced <- read_rds(opt$encode_path)
 # Visualizing the distribution of class after SMOTE
 generate_barplot(df_balanced, "class", "Class")
@@ -70,7 +70,7 @@ conf_matrix <- read_rds(opt$matrix_path)
 # Convert confusion matrix to data frame
 conf_df <- data.frame(conf_matrix$table)
 
-# Add labels to heatmao
+# Add labels to heatmap
 class_labels <- c("unacc", "acc", "good", "vgood")
 conf_df$Prediction <- factor(conf_df$Prediction, levels = c(1, 2, 3, 4), labels = class_labels)
 conf_df$Reference  <- factor(conf_df$Reference,  levels = c(1, 2, 3, 4), labels = class_labels)
