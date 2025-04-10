@@ -40,8 +40,9 @@ data/original/car.data: code/01-load.R
 
 # 02-clean-process.R
 output/encoded.RDS: code/02-clean-process.R
-	Rscript code/02-clean-process.R --file_path=data/original/car.data --data_path=data/cleaned/cleaned.RDS \
-		--encode_path=output/encoded.RDS
+	Rscript code/02-clean-process.R --file_path=data/original/car.data \
+	--data_path=data/cleaned/cleaned.RDS --encode_path=output/encoded.RDS \
+	--valid_path=data/cleaned/not_valid.RDS
 
 		
 # 03-visualizations.R
@@ -52,8 +53,12 @@ output/fig_target_dist.png output/fig_target_safety_1.png output/fig_target_buyi
 
 # 04-analysis.R
 output/matrix.RDS: code/04-analysis.R
-		Rscript code/04-analysis.R  --file_path=output/encoded.RDS \
+	Rscript code/04-analysis.R  --file_path=output/encoded.RDS \
 		--output_path=output/matrix.RDS 
+		
+# 05-data-validation.R
+output/DVC.html: code/05-data-validation.R
+	Rscript code/05-data-validation.R --file_path=data/cleaned/not_valid.RDS --report_path=output/
 
 
 # render quarto report in HTML and PDF
