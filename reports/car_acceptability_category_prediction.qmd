@@ -213,6 +213,11 @@ Our model is very good, but we still have some interesting questions for the fut
 
 ### Limitations
 
+1. The dataset contains a limited number of categorical features such as price and safety. Other potential influencing factors such as brand reliability, consumer ratings, etc. are not taken into account, which may reduce the prediction accuracy in practical applications.
+
+2. While the Random Forest model performs very well, it lacks interpretability compared to simpler models such as logistic regression or decision trees.
+
+Therefore, these are aspects that we can improve in the future.
 
 
 ## References
