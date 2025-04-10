@@ -29,7 +29,13 @@ git clone https://github.com/DSCI-310-2025/dsci-310-group-09.git
 to clone down our project repository.
 
 -----------------------------------
-2. make sure you have Docker application activated, and in your terminal, create the docker image by entering:
+2. change the current working directory, use
+```
+cd dsci-310-group-09
+```
+
+-----------------------------------
+3. make sure you have Docker application activated, and in your terminal, create the docker image by entering:
 ```
 docker  build -t <container_name> .
 ```
@@ -41,26 +47,27 @@ docker  build --platform=linux/amd64 -t <container_name> .
 ```
 
 -------------------
-3. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
+4. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
 ```
-docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work <container_name>
+docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio <container_name>
 ```
 The `<container_name>` has to be the same name you made in step 2. 
 
 For Mac users, use:
 ```
-docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work <container_name>
+docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio <container_name>
 ```
 
 ---------------------
-4. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
+5. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
 ---------------------------  
-5. In the terminal of Rstudio container, run:
+6. In the terminal of Rstudio container, run:
 ```
 quarto install tinytex
 ```
 to install latex for generating report
-6. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
+
+7. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
 
 
 
@@ -73,29 +80,37 @@ git clone https://github.com/DSCI-310-2025/dsci-310-group-09.git
 to clone down our project repository.
 
 ----------------------
-2. make sure you have Docker application activated, and in your terminal, pull the docker image by entering:
+2. change the current working directory, use
+```
+cd dsci-310-group-09
+```
+
+-----------------------------------
+3. make sure you have Docker application activated, and in your terminal, pull the docker image by entering:
 ```
 docker pull justintrenchcoat/milestone_1:latest
 ```
 -------------------
-3. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
+4. make sure you are at the root directory of this project, run the docker container by entering this in your terminal:
 ```
-docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work justintrenchcoat/milestone_1
+docker run --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio justintrenchcoat/milestone_1
 ```
 
 For Mac users, use:
 ```
-docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio/work justintrenchcoat/milestone_1
+docker run --platform=linux/amd64 --rm -it -e PASSWORD="password" -p 8787:8787 -v /$(pwd):/home/rstudio justintrenchcoat/milestone_1
 ```
 ---------------------
-4. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
+5. Open a browser, enter "localhost:8787" in the searchbar. In the prompt, enter "rstudio" as Username and "password" as Password.
 ---------------------------  
-5. In the terminal of Rstudio container, run:
+6. In the terminal of Rstudio container, run:
 ```
 quarto install tinytex
 ```
 to install latex for generating report
-6. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
+
+7. Now you may access all the files in the repository, and able to play around with the `car_acceptability_category_prediction.qmd` within the container!
+
 
 ### Usage of Makefile
 #### Running the Entire Workflow
@@ -139,22 +154,35 @@ To remove all generated files and reset the project, use:
 make clean
 ```
 
+### Usage of Test
+In the terminal of Rstudio container, run:
+```
+Rscript -e 'testthat::test_dir("tests/testthat")'
+```
+or just:
+```
+make test
+```
+would do!
+
 
 ## Dependencies
 - R and Essential R Packages:
-    - randomForest
     - caret
     - corrplot
-    - themis
-    - recipes
     - docopt
-    - utils
-    - readr
     - dplyr
-    - ggplot2
     - ggcorrplot
+    - ggplot2
     - knitr
+    - pointblank
+    - randomForest
+    - readr
+    - recipes
+    - testthat
+    - themis
     - tibble
+    - utils
 - Optional Meta-Packges
     - tidyverse (a convenient collection of packages included ggplot2, readr, tibble, etc)
 - Quarto
