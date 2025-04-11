@@ -36,7 +36,7 @@ ggsave(paste0(opt$output_path, "fig_target_dist.png"))
 # Visualizing relationships
 features <- c("safety", "buying", "persons", "maint", "lug_boot", "doors")
 
-# Generate the plots using the generate_feature_barplots function
+# Generate the plots for original data using the generate_feature_barplots function
 plot_list <- generate_feature_barplots(data, features)
 
 # Save each plot using ggsave outside the function
@@ -44,12 +44,17 @@ lapply(seq_along(plot_list), function(i) {
   ggsave(paste0(opt$output_path, "fig_relation_", features[i], "_1.png"), plot = plot_list[[i]])
 })
 
-lapply(seq_along(plot_list), function(i) {
-  ggsave(paste0(opt$output_path, "fig_relation_", features[i], "_2.png"), plot = plot_list[[i]])
+# Visualizations with encoded.RDS
+df_balanced <- read_rds(opt$encode_path)
+
+# Generate the plots for balanced data using the generate_feature_barplots function
+balanced_plot_list <- generate_feature_barplots(df_balanced, features)
+
+# Save each plot using ggsave outside the function
+lapply(seq_along(balanced_plot_list), function(i) {
+  ggsave(paste0(opt$output_path, "fig_relation_", features[i], "_2.png"), plot = balanced_plot_list[[i]])
 })
 
-# visualizations with encoded.RDS
-df_balanced <- read_rds(opt$encode_path)
 # Visualizing the distribution of class after SMOTE
 generate_barplot(df_balanced, "class", "Class")
 ggsave(paste0(opt$output_path, "fig_smote_dist.png"))
@@ -66,7 +71,7 @@ conf_matrix <- read_rds(opt$matrix_path)
 # Convert confusion matrix to data frame
 conf_df <- data.frame(conf_matrix$table)
 
-# Add labels to heatmao
+# Add labels to heatmap
 class_labels <- c("unacc", "acc", "good", "vgood")
 conf_df$Prediction <- factor(conf_df$Prediction, levels = c(1, 2, 3, 4), labels = class_labels)
 conf_df$Reference  <- factor(conf_df$Reference,  levels = c(1, 2, 3, 4), labels = class_labels)
