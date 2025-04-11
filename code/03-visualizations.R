@@ -5,9 +5,7 @@ library(knitr)
 library(dplyr)
 library(ggplot2)
 library(ggcorrplot)
-source("R/generate_barplot.R")
-source("R/generate_confusion_matrix_heatmap.R")
-source("R/generate_feature_plots.R")
+library(predictcarcategory)
 
 
 "This script reads processed data and create visualizations

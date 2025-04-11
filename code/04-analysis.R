@@ -1,4 +1,6 @@
-source("R/analysis_model.R")
+library(docopt)
+library(readr)
+library(predictcarcategory)
 "This script reads cleaned.RDS object and applies random forest.
 
 Usage: 04-analysis.R --file_path=<file_path> --output_path=<output_path>

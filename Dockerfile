@@ -31,4 +31,6 @@ RUN Rscript -e "install.packages(c('renv', 'remotes'), repos = c(CRAN = 'https:/
     Rscript -e "remotes::install_version('randomForest', version = '4.7-1.2', repos = 'https://cloud.r-project.org')" &&\
     Rscript -e "remotes::install_version('docopt', version = '0.7.1', repos = 'https://cloud.r-project.org')" &&\
     Rscript -e "remotes::install_version('ggcorrplot', version = '0.1.4.1', repos = 'https://cloud.r-project.org')" &&\
-    Rscript -e "remotes::install_version('testthat', version = '3.2.3', repos = 'https://cloud.r-project.org')"
+    Rscript -e "remotes::install_version('testthat', version = '3.2.3', repos = 'https://cloud.r-project.org')" &&\
+    Rscript -e "install.packages('pak', repos = 'https://cloud.r-project.org')" && \
+    Rscript -e "pak::pak('DSCI-310-2025/predictcarcategory@v0.0.0.9000')"
