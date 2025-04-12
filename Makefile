@@ -27,6 +27,7 @@ index.html:	data/original/car.data \
 			output/fig_smote_dist.png \
 			output/fig_corr_heatmap.png \
 			output/fig_conf_matrix.png \
+			output/DVC.html \
 			reports/car_acceptability_category_prediction.html \
 			reports/car_acceptability_category_prediction.pdf 
 			quarto render reports/car_acceptability_category_prediction.qmd
@@ -77,7 +78,6 @@ test:
 # clean
 clean: 
 		rm -rf data/cleaned/*
-		rm -rf data/original/*
 		rm -rf output/*
 		rm -rf docs/*
 		rm -rf reports/car_acceptability_category_prediction.html \

@@ -11,5 +11,11 @@ opt <- docopt(doc)
 
 # this would pull the dataset from original url, extract the zip file and store everything in data directory
 url <- opt$url_path
-download.file(url, destfile = paste0(opt$output_path, "car_evaluation.zip"))
-unzip(paste0(opt$output_path, "car_evaluation.zip"), exdir = opt$output_path)
+
+tryCatch({
+  download.file(url, destfile = paste0(opt$output_path, "car_evaluation.zip"))
+  unzip(paste0(opt$output_path, "car_evaluation.zip"), exdir = opt$output_path)
+  message("Download and unzip done!")
+}, error = function(e) {
+  message("Website are down, skipping download and using local dataset.")
+})
