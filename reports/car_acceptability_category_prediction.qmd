@@ -124,22 +124,6 @@ To address this, we applied SMOTE (Synthetic Minority Over-sampling Technique), 
 
 After applying SMOTE, the class distribution became approximately balanced, with each class containing around 1,250 instances, as shown in @fig-car_distri_after_enginerring_plot. This transformation enabled the model to give equal importance to each category during training, which significantly improved its ability to accurately classify "good" and "very good" cars—categories that might have otherwise been overlooked. The enhanced performance metrics for each class further demonstrate that SMOTE effectively reduced bias and improved the model’s predictive fairness across all categories.
 
-### Visualizing relationships with Class Balanced
-
-![Safety vs. Evaluation Class with Class Balance](../output/fig_relation_safety_2.png){#fig-car_safety_balance_plot width="60%"}
-
-![Buying vs. Evaluation Class with Class Balance](../output/fig_relation_buying_2.png){#fig-car_buying_balance_plot width="60%"}
-
-![Number of Passenger vs. Evaluation Class with Class Balance](../output/fig_relation_persons_2.png){#fig-car_persons_balance_plot width="60%"}
-
-![Maintenance vs. Evaluation Class with Class Balance](../output/fig_relation_maint_2.png){#fig-car_maintenance_balance_plot width="60%"}
-
-![Luggage Boot Size vs. Evaluation Class with Class Balance](../output/fig_relation_lug_boot_2.png){#fig-car_luggage_balance_plot width="60%"}
-
-![Number of Doors vs. Evaluation Class with Class Balance](../output/fig_relation_doors_2.png){#fig-car_doors_balance_plot width="60%"}
-
-The "safety vs. Evaluation Class" plot @fig-car_safety_balance_plot shows that cars with high safety ratings mostly receive `vgood`/`good` evaluations, while `low`/`med` safety cars are often labeled `unacc`. In "buying vs. Evaluation Class" @fig-car_buying_balance_plot, higher prices (`high`, `vhigh`) correlate with `unacc`, while affordable cars (`low`, `med`) are more likely to be `acc`/`vgood`. The "Number of Passenger vs. Evaluation Class" @fig-car_persons_balance_plot. indicates that cars with more passenger capacity tend to be `unacc`due to impracticality. For "maint vs. Evaluation Class" @fig-car_maintenance_balance_plot, high maintenance costs link to `unacc`, while lower costs improve acceptability. Lastly, door count has a minimal impact as shown in @fig-car_doors_balance_plot, with `unacc` prevailing across categories, though cars with 5+ doors show slightly higher `acc`/`vgood`. Overall, `unacc` is associated with high-cost, low-safety, or impractical configurations, while `vgood`/`good` relate to affordability, safety, and utility.
-
 ### Correlation Heatmap
 
 ![Correlation Heatmap](../output/fig_corr_heatmap.png){#fig-corr_heatmap width="60%"}
